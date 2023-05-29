@@ -28,6 +28,7 @@ class Jewels extends BaseGame {
 
     this.settings = {
       visualAidMode: false,
+      allowFlicks: true,
       onlyEggMode: false,
     };
     this.stats = {
@@ -43,9 +44,10 @@ class Jewels extends BaseGame {
     this._gameOverScreenSeen = true; // prevents instant gameover popup
 
     this.score = 0;
+    this.ongoingCombos = 0; // when 0, game can be ended
     this.activeCell = null;
 
-    this.maxTime = 25;
+    this.maxTime = 20;
     this.time = tweened(this.maxTime, {
       duration: 1000,
     });
@@ -92,6 +94,7 @@ class Jewels extends BaseGame {
     this.gameOver = false;
     this.result = false;
     this.score = 0;
+    this.ongoingCombos = 0;
     this.activeCell = null;
 
     this.time.set(this.maxTime);
@@ -143,9 +146,10 @@ class Jewels extends BaseGame {
     const timerUpdater = () => {
       this.time.update((t) => {
         let step = t - 1;
+        const loseCondition = step < 0;
 
         // end game check
-        if (step < 0) {
+        if (loseCondition && !this.ongoingCombos) {
           step = 0;
           clearInterval(this._timer);
           this.endGame();
@@ -243,6 +247,7 @@ class Jewels extends BaseGame {
   }
 
   async calculateAllCombos(depth = 1) {
+    this.ongoingCombos += 1;
     let combo = 0;
 
     const grid = [];
@@ -291,6 +296,7 @@ class Jewels extends BaseGame {
     const refiller = () => {
       if (isFieldFull) {
         this.calculateAllCombos(depth + 0.5);
+        this.ongoingCombos -= 1e4; // unlocks game end check condition
         return;
       }
       isFieldFull = true;
@@ -319,13 +325,17 @@ class Jewels extends BaseGame {
 
         forceUpdateDOM();
       }
-      setTimeout(refiller, 400);
+      setTimeout(refiller, 300);
     };
-    if (!isFieldFull) setTimeout(refiller, 500);
+    if (!isFieldFull) {
+      this.ongoingCombos += 1e4; // blocks game end check condition
+      setTimeout(refiller, 400);
+    }
 
     forceUpdateDOM();
     this.score += Math.round(combo * depth);
-    this.addTime(Math.round(combo * 0.25));
+    this.ongoingCombos -= 1;
+    this.addTime(Math.round(combo * 0.18));
     return combo;
   }
 
@@ -337,6 +347,7 @@ class Jewels extends BaseGame {
 
   endGame() {
     delete this._gameOverScreenSeen;
+    this.time.set(0);
     super.endGame(true);
 
     // calculate stats
@@ -350,8 +361,9 @@ class Jewels extends BaseGame {
     this.activeCell = null;
     setTimeout(() => {
       delete this.result;
+      this.time.set(0); // just in case some stupid animations decide to ruin it
       forceUpdateDOM();
-    }, 800);
+    }, 500);
 
     return this;
   }

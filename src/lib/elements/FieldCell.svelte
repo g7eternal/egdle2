@@ -2,10 +2,77 @@
   import { Confetti } from "svelte-confetti";
   import game, { forceUpdateDOM } from "../utils/state";
   export let cell;
+  export let allowFlicks = false;
   export let focused = false;
 
   function doClickCell(cell) {
     if (cell.click()) forceUpdateDOM();
+  }
+
+  function startFlick(cell, event) {
+    if (!allowFlicks || !cell.enabled) return;
+    if (!event?.target) return;
+    event.preventDefault();
+
+    // remember the original cell
+    $game._touchStartCell = cell;
+    $game._touchAction = event.touches[0];
+    $game._touchOrigin = event.target.getBoundingClientRect();
+  }
+  function endFlick(cell, event) {
+    if (!allowFlicks || !cell.enabled) return;
+    if (!event?.target) return;
+    event.preventDefault();
+
+    const fullTouch = event.changedTouches.item($game._touchAction.identifier);
+    if (!fullTouch) return;
+
+    // detect the type of touch motion
+    const motionX = fullTouch.clientX - $game._touchAction.clientX;
+    const motionY = fullTouch.clientY - $game._touchAction.clientY;
+    const absMotionX = Math.abs(motionX);
+    const absMotionY = Math.abs(motionY);
+    if (absMotionX >= $game._touchOrigin.width / 2 || absMotionY >= $game._touchOrigin.height / 2) {
+      // flick confirmed
+      const i = $game.field.cells.findIndex((c) => c === $game._touchStartCell);
+      if (i >= 0) {
+        let j = i;
+        if (absMotionX > absMotionY) {
+          j += Math.sign(motionX);
+        } else {
+          j += Math.sign(motionY) * $game.field.width;
+        }
+        const secondCell = $game.field.cells[j];
+        $game.swapTwoCells($game._touchStartCell, secondCell);
+      }
+      $game.activeCell = null;
+    } else {
+      // not a flick - emulate click
+      doClickCell($game._touchStartCell);
+    }
+
+    // cleanup
+    delete $game._touchStartCell;
+    delete $game._touchAction;
+    delete $game._touchOrigin;
+    forceUpdateDOM();
+  }
+
+  function startDrag(cell) {
+    if (!allowFlicks || !cell.enabled) return;
+    // mark original cell
+    $game._dragStartCell = cell;
+  }
+  function endDrag(cell) {
+    if (!allowFlicks || !cell.enabled) return;
+    if ($game._dragStartCell === cell) return;
+
+    // swap original and target cell
+    $game.swapTwoCells($game._dragStartCell, cell);
+    delete $game._dragStartCell;
+    $game.activeCell = null;
+
+    forceUpdateDOM();
   }
 </script>
 
@@ -15,6 +82,11 @@
   class:active={cell.enabled}
   class:transparent={!cell.visible}
   style:background-color={cell.visible ? cell.bgcolor : ""}
+  tabindex="-1"
+  on:mousedown={(event) => startDrag(cell, event)}
+  on:mouseup={(event) => endDrag(cell, event)}
+  on:touchstart={(event) => startFlick(cell, event)}
+  on:touchend={(event) => endFlick(cell, event)}
   on:click={() => doClickCell(cell)}
   on:keypress={(event) => {
     if (event.key === "Enter") doClickCell(cell);

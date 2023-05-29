@@ -15,7 +15,7 @@
 
   $: if (!$game._gameOverScreenSeen && $game.gameOver) {
     $game._gameOverScreenSeen = true;
-    gameOverModalTimer = setTimeout(() => gameOverModal.show(), 500);
+    gameOverModalTimer = setTimeout(() => gameOverModal.show(), 300);
   }
 
   onMount(() => {
@@ -38,7 +38,7 @@
         in:fly={{ duration: cellAnimTiming.in, y: -150 }}
         animate:flip={{ delay: 0, duration: 300 }}
       >
-        <FieldCell {cell} focused={$game.activeCell === cell} />
+        <FieldCell {cell} allowFlicks={$game.settings.allowFlicks} focused={$game.activeCell === cell} />
       </div>
     {/each}
   </div>

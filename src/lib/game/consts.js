@@ -74,6 +74,10 @@ export const settingsLibrary = {
       title: "🥚 OnlyEggs mode",
       desc: "All the elements in this game will be rendered as eggs",
     },
+    allowFlicks: {
+      title: "👆 Enable flicks",
+      desc: "Drag one cell onto another to swap. If disabled, only clicks will work",
+    },
   },
   binary: {
     visualAidMode: commonOptions.visualAidMode,
