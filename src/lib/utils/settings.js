@@ -67,17 +67,19 @@ try {
       toggleDarkMode(s.darkMode);
     }
 
-    // loading finished, show announcements if any
-    const adviceData = chooseAnnouncementOnLoad(s.announcements);
-    s.announcements = adviceData.seen;
-    if (adviceData.announce) {
-      showAdviceFriend(adviceData.announce.text, adviceData.announce.header);
-    }
+    setTimeout(() => {
+      // loading finished, show announcements if any
+      const adviceData = chooseAnnouncementOnLoad(s.announcements);
+      s.announcements = adviceData.seen;
+      if (adviceData.announce) {
+        showAdviceFriend(adviceData.announce.text, adviceData.announce.header);
+      }
 
-    // if no announcements, show daily egg fact
-    if (!adviceData.announce && dailyEggFactRequired(s.lastVisit)) {
-      tryShowDailyEggFact();
-    }
+      // if no announcements, show daily egg fact
+      if (!adviceData.announce && dailyEggFactRequired(s.lastVisit)) {
+        tryShowDailyEggFact();
+      }
+    }, 100);
 
     return s;
   });

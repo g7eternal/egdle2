@@ -17,6 +17,7 @@ export const emoji = {
 export const cellColors = {
   //empty: "rgba(0, 0, 0, 0)",
   red: "rgba(192, 96, 96, 0.2)",
+  orange: "rgba(160, 128, 96, 0.3)",
   yellow: "rgba(160, 160, 96, 0.3)",
   purple: "rgba(136, 64, 192, 0.2)",
   green: "rgba(96, 192, 96, 0.2)",
