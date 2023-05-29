@@ -45,6 +45,14 @@ try {
 } catch (e) {
   console.warn("Failed to restore settings from localStorage", e);
 } finally {
+  // subscribe an auto-saver
+  if (browser) {
+    settings.subscribe((s) => {
+      localStorage.setItem(lsKey, JSON.stringify(s));
+    });
+  }
+
+  // do first update
   settings.update((s) => {
     // validate according to default settings list
     for (let key in defaultSettings) {
@@ -70,7 +78,6 @@ try {
     setTimeout(() => {
       // loading finished, show announcements if any
       const adviceData = chooseAnnouncementOnLoad(s.announcements);
-      s.announcements = adviceData.seen;
       if (adviceData.announce) {
         showAdviceFriend(adviceData.announce.text, adviceData.announce.header);
       }
@@ -79,21 +86,14 @@ try {
       if (!adviceData.announce && dailyEggFactRequired(s.lastVisit)) {
         tryShowDailyEggFact();
       }
+
+      // reset last visit date, and save everything
+      settings.update((s) => {
+        s.announcements = adviceData.seen;
+        s.lastVisit = new Date();
+        return s;
+      });
     }, 100);
-
-    return s;
-  });
-
-  // subscribe an auto-saver
-  if (browser) {
-    settings.subscribe((s) => {
-      localStorage.setItem(lsKey, JSON.stringify(s));
-    });
-  }
-
-  // reset last visit date
-  settings.update((s) => {
-    s.lastVisit = new Date();
 
     return s;
   });
