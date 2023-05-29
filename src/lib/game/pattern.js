@@ -1,5 +1,4 @@
 import { BaseField, BaseGame } from "./baseClasses";
-import { recordSeenGame } from "../utils/settings";
 import { sample, sampleSize } from "../utils/common";
 import { forceUpdateDOM } from "../utils/state";
 import { cellColors, emoji } from "./consts";
@@ -223,6 +222,5 @@ class Pattern extends BaseGame {
 let game = null;
 export function getInstance() {
   if (!game) game = new Pattern();
-  recordSeenGame(game.id);
   return game;
 }

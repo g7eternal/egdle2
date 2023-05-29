@@ -1,6 +1,5 @@
 import { writable } from "svelte/store";
 import { BaseGame } from "./baseClasses";
-import { recordSeenGame } from "../utils/settings";
 import { formatTimer, shuffle, sampleValue, isMobileClient } from "../utils/common";
 import { cellColors, emoji } from "./consts";
 import { forceUpdateDOM } from "../utils/state";
@@ -190,6 +189,5 @@ class Aimlab extends BaseGame {
 let game = null;
 export function getInstance() {
   if (!game) game = new Aimlab();
-  recordSeenGame(game.id);
   return game;
 }

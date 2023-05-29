@@ -1,5 +1,4 @@
 import { BaseGame } from "./baseClasses";
-import { recordSeenGame } from "../utils/settings";
 import { emoji, cellColors } from "./consts";
 
 import Helper from "./help/Matcher.svelte";
@@ -151,6 +150,5 @@ class Matcher extends BaseGame {
 let game = null;
 export function getInstance() {
   if (!game) game = new Matcher();
-  recordSeenGame(game.id);
   return game;
 }

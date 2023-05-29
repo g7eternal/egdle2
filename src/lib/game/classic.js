@@ -1,6 +1,5 @@
 import { BaseGame } from "./baseClasses";
 import { cellColors, emoji, today } from "./consts";
-import { recordSeenGame } from "../utils/settings";
 import { sample, sfc32 } from "../utils/common";
 import {
   migrateClassicField,
@@ -221,6 +220,5 @@ class Egdle extends BaseGame {
 let game = null;
 export function getInstance() {
   if (!game) game = new Egdle();
-  recordSeenGame(game.id);
   return game;
 }

@@ -1,5 +1,6 @@
 <script>
   import MaterialIcon from "../elements/MaterialIcon.svelte";
+  import { settings, recordSeenGame } from "../utils/settings";
   import tippy from "../utils/tippy";
   import game from "../utils/state";
   import Settings from "./Settings.svelte";
@@ -13,7 +14,10 @@
 
   let aboutClickerBtn; // controls automatic "about" helper showing on first visit of a game
   $: if ($game) {
-    if ($game.stats.lastVisit.getTime() === 0) aboutClickerBtn.click();
+    if (!$settings.seenGames.includes($game.id)) {
+      recordSeenGame($game.id);
+      aboutClickerBtn?.click();
+    }
   }
 </script>
 

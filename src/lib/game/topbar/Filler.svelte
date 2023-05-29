@@ -3,9 +3,9 @@
   import currentGame from "$lib/utils/state";
   import tippy from "$lib/utils/tippy";
   import { showConfirmAdviceFriend } from "$lib/utils/adviceFriend";
+  import { forceUpdateDOM } from "$lib/utils/state";
   import MaterialIcon from "$lib/elements/MaterialIcon.svelte";
   import { cellColors } from "../consts";
-  import { forceUpdateDOM } from "../../utils/state";
 
   // cannot do double subscription, have to resolve this reference:
   const displayTimerStore = $currentGame.displayTime;
