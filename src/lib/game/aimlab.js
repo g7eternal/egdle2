@@ -145,6 +145,7 @@ class Aimlab extends BaseGame {
 
     this.stats.bestTime = Math.min(this.stats.bestTime, time) || time;
     this.stats.bestClickTime = Math.min(this.stats.bestClickTime, avgClickTime) || avgClickTime;
+    this.saveState();
 
     // re-enable "start game" button
     this.displayTime.set(formatTimer(time, true));
@@ -166,13 +167,15 @@ class Aimlab extends BaseGame {
     let str = "🥚 " + this.name;
 
     if (this.stats.runs > 0) {
-      str += `\n🏁 Last run: ${formatTimer(this.stats.lastTime, true)} (${this.stats.lastClicks})`;
+      str += `\n🏁 Last run: ${formatTimer(this.stats.lastTime, true)} (~${Math.round(
+        this.stats.lastClickTime
+      )} ms)`;
+      if (Math.round(this.stats.lastClickTime) === Math.round(this.stats.bestClickTime))
+        str += "🎖️";
       str += `\nAverage in ${this.stats.runs} runs:`;
-      str += `\n⏱️ ~${formatTimer(this.stats.lastTime, true)}`;
-      str += `\n👆 ~${this.stats.avgClicks.toFixed(2)} clicks`;
-      str += `\nPersonal best:`;
-      str += `\n⏱️🎖️ ${formatTimer(this.stats.bestTime, true)}`;
-      str += `\n👆🎖️ ${this.stats.bestClicks} clicks`;
+      str += `\n⏱️ ${formatTimer(this.stats.lastTime, true)}`;
+      str += `\n👆 ${Math.round(this.stats.avgClickTime)}ms per click`;
+      str += `\nPersonal best: ⏱️ ${formatTimer(this.stats.bestTime, true)}`;
     }
 
     str += "\n" + window.location.href;
