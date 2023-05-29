@@ -2,6 +2,7 @@
   import MaterialIcon from "./MaterialIcon.svelte";
   import currentGame, { forceUpdateDOM } from "../utils/state";
   import { tryShowDailyEggFact } from "../utils/dailyFact";
+  import { Confetti } from "svelte-confetti";
 
   function doFullAppReset() {
     localStorage.clear();
@@ -12,6 +13,11 @@
     if (!$currentGame) return;
     $currentGame.field.showCells();
     forceUpdateDOM();
+  }
+
+  let debugConfetti = false;
+  function doConfettiTest() {
+    debugConfetti = !debugConfetti;
   }
 
   const chromaKeys = ["", "lime", "cyan", "red", "blue", "purple"];
@@ -26,6 +32,22 @@
 </script>
 
 <div class="d-flex flex-wrap justify-content-center">
+  <button class="btn btn-outline-secondary" on:click={doConfettiTest}>
+    {#if debugConfetti}
+      <Confetti
+        rounded
+        size="12"
+        amount="30"
+        noGravity
+        x={[-0.3, 0.3]}
+        y={[0, 0.5]}
+        duration="1400"
+        colorArray={["#ffda4a78", "#ffcf8a77", "#ffe99e69", "#ba9f6676", "#e6be6097"]}
+      />
+    {/if}
+    🎉 Confetti
+  </button>
+
   <button class="btn btn-outline-secondary" on:click={tryShowDailyEggFact}>
     🥚 Show random egg fact
   </button>

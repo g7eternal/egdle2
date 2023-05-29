@@ -31,6 +31,7 @@ export class BaseCell {
 
     this.winner = false;
     this.loser = false;
+    this.finisher = false; // toggles confetti animation
 
     if (withClicks) this.clicks = 0;
 

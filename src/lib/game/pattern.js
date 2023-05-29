@@ -122,6 +122,7 @@ class Pattern extends BaseGame {
       if (this.winner) {
         gameInstance.clicks += 1;
         if (gameInstance.clicks >= gameInstance.eggs) {
+          this.finisher = true; // shows confetti
           gameInstance.field.disableCells();
           gameInstance.scheduleHideAndRender();
           setTimeout(() => gameInstance.startLevel(), DELAY_BETWEEN_ACTIONS * 2);

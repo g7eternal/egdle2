@@ -73,6 +73,7 @@ class Matcher extends BaseGame {
             activeCell.winner = true;
             this.winner = true;
             if (gameInstance.field.cells.every((c) => c.winner)) {
+              this.finisher = true; // shows confetti
               gameInstance.endGame(true);
             }
           } else {

@@ -1,4 +1,5 @@
 <script>
+  import { Confetti } from "svelte-confetti";
   import game, { forceUpdateDOM } from "../utils/state";
   export let cell;
   export let focused = false;
@@ -27,6 +28,19 @@
         {cell.color}
       </div>
     {/if}
+  {/if}
+
+  {#if cell.finisher}
+    <Confetti
+      rounded
+      size="12"
+      amount="30"
+      noGravity
+      x={[-0.3, 0.3]}
+      y={[0, 0.5]}
+      duration="1400"
+      colorArray={["#ffda4a78", "#ffcf8a77", "#ffe99e69", "#ba9f6676", "#e6be6097"]}
+    />
   {/if}
 </div>
 

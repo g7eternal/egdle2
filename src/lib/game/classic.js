@@ -53,6 +53,7 @@ class Egdle extends BaseGame {
       this.bgcolor = cellColors.red;
       if (this.winner) {
         this.bgcolor = cellColors.yellow;
+        this.finisher = true; // starts confetti animation
         gameInstance.endGame(true);
       } else if (this.loser) {
         this.bgcolor = cellColors.purple;
