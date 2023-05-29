@@ -1,6 +1,6 @@
 <script>
   import { fade } from "svelte/transition";
-  import { settings } from "../utils/settings";
+  import { appReady, settings } from "../utils/settings";
   import { nullFunction } from "../game/consts";
 
   import { getInstance as egdle } from "../game/classic";
@@ -22,8 +22,8 @@
         {
           id: "matcher",
           init: matcher,
-          name: "Matcher",
-          desc: "Click around and locate all matching egg pairs on the field.",
+          name: "Pairs",
+          desc: "Click around and locate all matching eggs on the field.",
         },
       ],
     },
@@ -68,7 +68,7 @@
           <div>
             <h3>
               {game.name}
-              {#if !$settings.seenGames?.includes(game.id)}
+              {#if $appReady && !$settings.seenGames.includes(game.id)}
                 <span class="badge bg-success">New!</span>
               {/if}
             </h3>

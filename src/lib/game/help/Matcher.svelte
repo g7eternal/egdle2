@@ -2,7 +2,7 @@
   import currentGame from "$lib/utils/state";
 </script>
 
-<p>Matcher is a memory game where you need to match the eggs.</p>
+<p>This is a memory game where you need to match the eggs.</p>
 <p>Click two cells, and if they match - they stay. The game ends when you match all the eggs.</p>
 
 <hr />
@@ -10,9 +10,9 @@
 <hr />
 
 <p>
-  There are
+  Any pair of cells will match if they have the same color. There are
   <b>{$currentGame.colors.length}</b>
-  distinct colors in total. Any pair of cells will match if they have the same color.
+  distinct colors in total.
 </p>
 
 <p>

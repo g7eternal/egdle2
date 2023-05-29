@@ -4,6 +4,8 @@ import { showAdviceFriend } from "./adviceFriend";
 import { chooseAnnouncementOnLoad } from "./announcements";
 import { migrateSettings } from "./migrateV1";
 
+const lsKey = "egdle2-settings";
+
 const defaultSettings = {
   darkMode: false,
   firstVisit: true,
@@ -11,8 +13,8 @@ const defaultSettings = {
   seenGames: ["classic"],
 };
 
-export const settings = writable({});
-const lsKey = "egdle2-settings";
+export const settings = writable(Object.assign({}, defaultSettings));
+export const appReady = writable(false);
 
 try {
   if (!browser) throw new Error("Not a browser, skip loading settings");
@@ -32,6 +34,7 @@ try {
     for (let key in parsedSettings) {
       if (key in defaultSettings) s[key] = parsedSettings[key];
     }
+
     return s;
   });
 } catch (e) {
@@ -75,6 +78,9 @@ try {
       localStorage.setItem(lsKey, JSON.stringify(s));
     });
   }
+
+  // set ready flag to True as we finished parsing settings
+  appReady.set(true);
 }
 
 export function toggleDarkMode(newState) {

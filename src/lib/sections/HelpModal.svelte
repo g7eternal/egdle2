@@ -5,7 +5,9 @@
 
 <div class="modal-content">
   <div class="modal-header">
-    <h5 class="modal-title fs-5" id="mdlHelpTitle">❔ About</h5>
+    <h5 class="modal-title fs-5" id="mdlHelpTitle">
+      <MaterialIcon size="26px">help_outline</MaterialIcon> About
+    </h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
   </div>
   <div class="modal-body">
@@ -31,8 +33,8 @@
     {/if}
 
     <hr />
-    <div class="text-muted">
-      Egdle Game Hub created with <MaterialIcon color="#c99">favorite</MaterialIcon> by
+    <div class="authorship text-muted">
+      Egdle Game Hub created with <MaterialIcon color="#c99" size="16px">favorite</MaterialIcon> by
       <a href="https://g7eternal.com/" rel="noreferrer" target="_blank">G7Eternal</a>
     </div>
   </div>
@@ -42,5 +44,9 @@
   h4 {
     text-align: center;
     margin-bottom: 16px;
+  }
+
+  .authorship {
+    font-size: 12px;
   }
 </style>

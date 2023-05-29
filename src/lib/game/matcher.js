@@ -11,7 +11,7 @@ class Matcher extends BaseGame {
   constructor() {
     super();
     this.id = "matcher";
-    this.name = "Egdle Matcher";
+    this.name = "Egdle Pairs";
     this.kind = "daily";
 
     this.refreshIssueNumber("2023-04-01T00:00:00");

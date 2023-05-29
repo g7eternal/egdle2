@@ -79,6 +79,17 @@
     text-shadow: none;
   }
 
+  /* for debug purposes */
+  :global(.chroma-keyed) .cell:not(.transparent) {
+    background-color: var(--bs-secondary-bg) !important;
+  }
+  :global(.chroma-keyed) .cell.active:hover {
+    background-color: rgba(192, 192, 192, 1);
+  }
+  :global(.chroma-keyed) .cell.transparent {
+    background-color: var(--bs-body-bg);
+  }
+
   @media all and (max-width: 400px) {
     .cell {
       border-width: 1px;

@@ -80,14 +80,19 @@ export class BaseCell {
 
 export class BaseField {
   constructor(width = 6, height = 6) {
+    // recommended min size: 3x3
+    // recommended max size: 8x8
+    this.setSize(width, height);
+  }
+
+  setSize(width, height) {
     this.width = width;
     this.height = height;
     if (width < 3 || height < 3)
       throw new Error("Invalid field dimensions: cannot go lower than 3x3");
 
     this.size = this.width * this.height;
-
-    this.reset();
+    return this.reset();
   }
 
   reset() {

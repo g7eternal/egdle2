@@ -3,7 +3,9 @@
   import { settings, toggleDarkMode } from "../utils/settings";
   import game, { forceUpdateDOM } from "../utils/state";
   import { settingsLibrary } from "../game/consts";
+
   import DevModeButtons from "../elements/DevModeButtons.svelte";
+  import MaterialIcon from "../elements/MaterialIcon.svelte";
 
   function updateExternalOption(event) {
     const key = event.currentTarget.dataset.optionkey;
@@ -13,56 +15,66 @@
   }
 </script>
 
-<div class="option-block">
-  <div class="form-check form-switch">
-    <input
-      class="form-check-input"
-      type="checkbox"
-      id="opt_DarkMode"
-      checked={$settings.darkMode}
-      on:change={() => toggleDarkMode()}
-    />
-    <label class="form-check-label" for="opt_DarkMode">💡 Dark theme</label>
-    <br />
-    <small class="form-text">Toggles light/dark mode for the page</small>
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title fs-5" id="mdlSettingsTitle">
+      <MaterialIcon size="24px">settings</MaterialIcon> Settings
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
   </div>
-</div>
-
-<div class="option-block">
-  {#if $game}
-    {#each Object.keys($game.settings) as key}
-      {@const lib = settingsLibrary[$game.id][key]}
-      {@const disabled = $game.disabledSettings.has(key)}
+  <div class="modal-body">
+    <div class="option-block">
       <div class="form-check form-switch">
         <input
           class="form-check-input"
           type="checkbox"
-          id={"opt_" + key}
-          checked={$game.settings[key]}
-          {disabled}
-          data-optionkey={key}
-          on:change={updateExternalOption}
+          id="opt_DarkMode"
+          checked={$settings.darkMode}
+          on:change={() => toggleDarkMode()}
         />
-        <label class="form-check-label" for={"opt_" + key}>{lib.title}</label>
+        <label class="form-check-label" for="opt_DarkMode">💡 Dark theme</label>
         <br />
-        <small class="form-text" class:disabled>
-          {disabled ? lib.error : lib.desc}
-        </small>
+        <small class="form-text">Toggles light/dark mode for the page</small>
       </div>
-    {/each}
-  {:else}
-    <div class="mt-2 fst-italic text-center text-secondary">
-      More options will be available after you choose a game
     </div>
-  {/if}
 
-  {#if devMode}
-    <hr />
-    <h6 class="text-center">Developer mode options</h6>
-    <div class="d-flex justify-content-center">
-      <DevModeButtons />
+    <div class="option-block">
+      {#if $game}
+        {#each Object.keys($game.settings) as key}
+          {@const lib = settingsLibrary[$game.id][key]}
+          {@const disabled = $game.disabledSettings.has(key)}
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id={"opt_" + key}
+              checked={$game.settings[key]}
+              {disabled}
+              data-optionkey={key}
+              on:change={updateExternalOption}
+            />
+            <label class="form-check-label" for={"opt_" + key}>{lib.title}</label>
+            <br />
+            <small class="form-text" class:disabled>
+              {disabled ? lib.error : lib.desc}
+            </small>
+          </div>
+        {/each}
+      {:else}
+        <div class="mt-2 fst-italic text-center text-secondary">
+          More options will be available after you choose a game
+        </div>
+      {/if}
+
+      {#if devMode}
+        <hr />
+        <h6 class="text-center">Developer mode options</h6>
+        <div class="d-flex justify-content-center">
+          <DevModeButtons />
+        </div>
+      {/if}
     </div>
-  {/if}
+  </div>
 </div>
 
 <style>

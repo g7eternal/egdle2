@@ -20,16 +20,18 @@
     <b class="text-success">{$currentGame.level}</b>
   </div>
   <div class="section mid">
-    {#if $currentGame.gameOver && !$currentGame.result}
-      <button class="btn btn-success" on:click={startNewRun}>
-        <MaterialIcon>flag</MaterialIcon>
-        Start game
-      </button>
-    {:else}
-      <button class="btn btn-outline-warning" on:click={askForRestart}>
-        <MaterialIcon>restart_alt</MaterialIcon>
-        Start over
-      </button>
+    {#if !$currentGame.result}
+      {#if $currentGame.gameOver}
+        <button class="btn btn-success" on:click={startNewRun}>
+          <MaterialIcon>flag</MaterialIcon>
+          Start game
+        </button>
+      {:else}
+        <button class="btn btn-outline-warning" on:click={askForRestart}>
+          <MaterialIcon>restart_alt</MaterialIcon>
+          Start over
+        </button>
+      {/if}
     {/if}
   </div>
   <div class="section right">
