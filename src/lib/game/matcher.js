@@ -75,6 +75,7 @@ class Matcher extends BaseGame {
             if (gameInstance.field.cells.every((c) => c.winner)) {
               this.finisher = true; // shows confetti
               gameInstance.endGame(true);
+              setTimeout(() => (this.finisher = false), 1500); // removes trailing confetti
             }
           } else {
             activeCell.hideAfter(1000);

@@ -29,11 +29,11 @@ a {
 
 /* restyle bootstrap: */
 [data-bs-theme="light"] {
-  --bs-primary-text: #00aa31;
-  --bs-link-hover-color: #00aa31;
-  --bs-link-hover-color-rgb: 0, 170, 49;
-  --bs-link-color: #00aa31;
-  --bs-link-color-rgb: 0, 170, 49;
+  --bs-primary-text: #007a31;
+  --bs-link-hover-color: #007a31;
+  --bs-link-hover-color-rgb: 0, 122, 49;
+  --bs-link-color: #007a31;
+  --bs-link-color-rgb: 0, 122, 49;
 }
 [data-bs-theme="dark"] {
   --bs-body-bg: #212121;

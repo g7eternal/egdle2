@@ -109,6 +109,13 @@ export class BaseField {
     return this;
   }
 
+  clear(content, withClicks) {
+    this.cells.forEach((f) => {
+      f.clear(content, withClicks);
+    });
+    return this;
+  }
+
   enableCells() {
     this.cells.forEach((f) => {
       f.enabled = true;

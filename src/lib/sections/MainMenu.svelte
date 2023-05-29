@@ -7,6 +7,7 @@
   import { getInstance as matcher } from "../game/matcher";
   import { getInstance as pattern } from "../game/pattern";
   import { getInstance as filler } from "../game/filler";
+  import { getInstance as aimlab } from "../game/aimlab";
 
   import game from "../utils/state";
 
@@ -31,6 +32,12 @@
     {
       title: "Other games",
       list: [
+        {
+          id: "aimlab",
+          init: aimlab,
+          name: "Reflex",
+          desc: "Collect the randomly appearing eggs as quickly as possible",
+        },
         {
           id: "pattern",
           init: pattern,

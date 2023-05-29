@@ -21,11 +21,15 @@ export function sampleSize(arr = [], howMany = 0) {
   return indices.slice(-howMany).map((ix) => arr[ix]);
 }
 
-export function isMobileClient() {
+export function sampleValue(obj = {}) {
+  return sample(Object.values(obj));
+}
+
+export function isMobileClient(strictly = false) {
   if (!browser) return false;
   // yoinked from nytimes wordle
   let userAgent = String(navigator.userAgent || navigator.vendor || window.opera || "");
-  if (userAgent.toLowerCase().indexOf("firefox") > -1) return false; // fix: firefox share window is donk, but they support clipboard api
+  if (!strictly && userAgent.toLowerCase().indexOf("firefox") > -1) return false; // fix: firefox share window is donk, but they support clipboard api
   return (
     /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
       userAgent
@@ -60,4 +64,10 @@ export function formatTimer(time, withMS = false) {
   let timeString = dateFormat(time, "MM:ss");
   if (withMS) timeString += "." + String(time % 1000 | 0).padStart(3, "0");
   return timeString;
+}
+
+export function asyncPause(delay = 0) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
 }
