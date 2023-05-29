@@ -1,29 +1,29 @@
 <script>
-  import { scale } from "svelte/transition";
   import currentGame from "$lib/utils/state";
   import tippy from "$lib/utils/tippy";
   import { showConfirmAdviceFriend } from "$lib/utils/adviceFriend";
   import { forceUpdateDOM } from "$lib/utils/state";
+  import GameStartCountdown from "$lib/elements/GameStartCountdown.svelte";
   import MaterialIcon from "$lib/elements/MaterialIcon.svelte";
   import { cellColors } from "../consts";
 
   // cannot do double subscription, have to resolve this reference:
   const displayTimerStore = $currentGame.displayTime;
 
-  let countdown = -1;
   function startNewRun() {
+    $currentGame?.startNewRun();
+  }
+
+  let countdown = false;
+  function doStart() {
+    $currentGame.resetTimer();
     $currentGame.field.reset().disableCells();
     forceUpdateDOM();
-    countdown = 3;
-    const countTimer = setInterval(() => {
-      countdown -= 1;
-      if (countdown === 0) $currentGame.startNewRun();
-      if (countdown < 0) clearInterval(countTimer);
-    }, 1000);
+    countdown = true;
   }
 
   function askForRestart() {
-    showConfirmAdviceFriend("Do you really want to reset the run?", "Yes, I do", startNewRun);
+    showConfirmAdviceFriend("Do you really want to reset the run?", "Yes, I do", doStart);
   }
 
   function setActiveColor(color) {
@@ -40,12 +40,10 @@
   </div>
   <div class="section mid">
     {#if !$currentGame.result}
-      {#if countdown >= 0}
-        {#key countdown}
-          <div class="countdown" in:scale>{countdown || "GO!"}</div>
-        {/key}
+      {#if countdown}
+        <GameStartCountdown runFunction={startNewRun} bind:isVisible={countdown} />
       {:else if $currentGame.gameOver}
-        <button class="btn btn-success" on:click={startNewRun}>
+        <button class="btn btn-success" on:click={doStart}>
           <MaterialIcon>flag</MaterialIcon>
           Start game
         </button>
@@ -139,12 +137,6 @@
   }
   .color-picker:active {
     transform: scale(0.9);
-  }
-
-  .countdown {
-    transform: scale(1.3);
-    font-weight: 500;
-    color: var(--bs-primary-text);
   }
 
   @media all and (max-width: 400px) {

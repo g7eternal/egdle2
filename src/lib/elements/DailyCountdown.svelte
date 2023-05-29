@@ -2,6 +2,8 @@
   import { today } from "../game/consts";
   import MaterialIcon from "./MaterialIcon.svelte";
 
+  export let caption = "Field will be reset in:";
+
   const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
 
   let timeLeft = "",
@@ -27,7 +29,7 @@
 <div>
   {#if timeDiff >= 0}
     <MaterialIcon>alarm</MaterialIcon>
-    Field will be reset in:
+    {caption}
     <b class="text-success">{timeLeft}</b>
   {:else}
     <MaterialIcon>alarm_on</MaterialIcon>

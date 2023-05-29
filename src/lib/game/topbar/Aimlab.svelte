@@ -1,28 +1,28 @@
 <script>
-  import { scale } from "svelte/transition";
   import currentGame from "$lib/utils/state";
   import tippy from "$lib/utils/tippy";
+  import { forceUpdateDOM } from "$lib/utils/state";
   import { showConfirmAdviceFriend } from "$lib/utils/adviceFriend";
   import MaterialIcon from "$lib/elements/MaterialIcon.svelte";
-  import { forceUpdateDOM } from "../../utils/state";
+  import GameStartCountdown from "$lib/elements/GameStartCountdown.svelte";
 
   // cannot do double subscription, have to resolve this reference:
   const displayTimerStore = $currentGame.displayTime;
 
-  let countdown = -1;
+  let countdown = false;
+
   function startNewRun() {
-    countdown = 3;
-    const countTimer = setInterval(() => {
-      countdown -= 1;
-      if (countdown === 0) $currentGame.startNewRun();
-      if (countdown < 0) clearInterval(countTimer);
-    }, 1000);
+    $currentGame?.startNewRun();
+  }
+
+  function doStart() {
+    countdown = true;
   }
 
   function doRestart() {
     $currentGame.reset();
     forceUpdateDOM();
-    startNewRun();
+    doStart();
   }
 
   function askForRestart() {
@@ -32,7 +32,7 @@
 
 <div class="bar">
   <div class="section left">
-    <span use:tippy={{ content: "Time remaining" }}>
+    <span use:tippy={{ content: "Time elapsed" }}>
       <MaterialIcon size="24px">timer</MaterialIcon>
     </span>
     <b class="timer text-success">
@@ -41,12 +41,10 @@
   </div>
   <div class="section mid">
     {#if !$currentGame.result}
-      {#if countdown >= 0}
-        {#key countdown}
-          <div class="countdown" in:scale>{countdown || "GO!"}</div>
-        {/key}
+      {#if countdown}
+        <GameStartCountdown bind:isVisible={countdown} runFunction={startNewRun} />
       {:else if $currentGame.gameOver}
-        <button class="btn btn-success" on:click={startNewRun}>
+        <button class="btn btn-success" on:click={doStart}>
           <MaterialIcon>flag</MaterialIcon>
           Start game
         </button>
@@ -97,11 +95,6 @@
   .timer {
     color: inherit;
     transition: color 1s ease-out;
-  }
-  .countdown {
-    transform: scale(1.3);
-    font-weight: 500;
-    color: var(--bs-primary-text);
   }
 
   @media all and (max-width: 400px) {
