@@ -130,6 +130,7 @@
   @media all and (max-width: 400px) {
     .bar {
       flex-flow: row wrap;
+      padding: 0;
     }
     .section {
       margin: 8px 0;
@@ -139,11 +140,13 @@
       font-size: 10px;
     }
     .mid {
-      gap: 2px;
+      gap: 8px;
     }
     .color-picker {
       width: 50px;
+      min-width: 33%;
       height: 50px;
+      padding: 0;
     }
   }
 </style>

@@ -264,7 +264,6 @@ export class BaseGame {
   }
 
   endGame(result, skipRecording = false) {
-    console.info("Game ended. Result:", result);
     this.gameOver = true;
     this.result = Boolean(result);
 

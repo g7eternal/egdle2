@@ -143,6 +143,7 @@
   .promise {
     width: 100%;
     margin: 0;
+    padding-bottom: 16px;
     font-style: italic;
     text-align: center;
     opacity: 0.5;

@@ -46,11 +46,11 @@
 
 <style>
   .cell {
-    font-size: 30px;
-    width: 100px;
+    font-size: 28px;
+    width: 90px;
     max-width: 15vw;
     min-width: 50px;
-    height: 100px;
+    height: 90px;
     max-height: 12vh;
     min-height: 50px;
     color: inherit;
