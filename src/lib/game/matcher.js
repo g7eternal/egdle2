@@ -15,7 +15,7 @@ class Matcher extends BaseGame {
     this.name = "Egdle Pairs";
     this.kind = "daily";
 
-    this.refreshIssueNumber("2023-04-01T00:00:00");
+    this.refreshIssueNumber("2023-03-27T00:00:00");
 
     this.helperComponent = Helper;
     this.statsComponent = Stats;
