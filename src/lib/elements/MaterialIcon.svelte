@@ -5,7 +5,7 @@
 
 <span
   class="material-icons notranslate align-text-bottom cursor-default"
-  notranslate
+  translate="no"
   style:color
   style:font-size={size}
 >

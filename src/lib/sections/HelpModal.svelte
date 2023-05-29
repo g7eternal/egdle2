@@ -16,13 +16,7 @@
       <svelte:component this={$game.helperComponent} />
     {:else}
       <h4>
-        <img
-          class="align-text-bottom me-1"
-          src="/pics/icon/favicon-32x32.png"
-          alt="Okayeg"
-          width="28"
-          height="28"
-        />
+        <img class="align-text-bottom me-1" src="/pics/icon/favicon-32x32.png" alt="Okayeg" width="28" height="28" />
         <b>Egdle</b> Game Hub 🥚
       </h4>
       <p>
@@ -34,20 +28,19 @@
         <b><MaterialIcon>help_outline</MaterialIcon> Help</b> icon.
       </p>
       <p>
-        Most games will require basic interaction by means of <em>clicking</em> or <em>tapping</em>.
-        Use left mouse button to click stuff, or your touch screen to tap stuff. Simple enough,
-        right?
+        Most games will require basic interaction by means of <em>clicking</em> or <em>tapping</em>. Use left mouse
+        button to click stuff, or your touch screen to tap stuff. Simple enough, right?
       </p>
       <p>
-        <b><MaterialIcon>settings</MaterialIcon> Settings</b> menu allows you to customize your experience.
-        Some options are only available once you get into the game.
+        <b><MaterialIcon>settings</MaterialIcon> Settings</b> menu allows you to customize your experience. Some options
+        are only available once you get into the game.
       </p>
     {/if}
 
     <hr />
     <div class="authorship text-muted">
       Egdle Game Hub created with <MaterialIcon color="#c99" size="16px">favorite</MaterialIcon> by
-      <a href="https://g7eternal.com/" rel="noreferrer" target="_blank">G7Eternal</a>
+      <a href="https://g7eternal.com/" rel="noreferrer" target="_blank" translate="no">G7Eternal</a>
     </div>
   </div>
 </div>
