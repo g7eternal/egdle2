@@ -1,8 +1,11 @@
 <script>
   import { fade } from "svelte/transition";
   import { settings } from "../utils/settings";
-  import { getInstance as egdle } from "../game/classic";
   import { nullFunction } from "../game/consts";
+
+  import { getInstance as egdle } from "../game/classic";
+  import { getInstance as matcher } from "../game/matcher";
+
   import game from "../utils/state";
 
   const variants = [
@@ -17,7 +20,7 @@
         },
         {
           id: "matcher",
-          init: nullFunction,
+          init: matcher,
           name: "Matcher",
           desc: "Click around and locate all matching egg pairs on the field.",
         },
@@ -60,7 +63,7 @@
             if (event.key === "Enter") setGame(game);
           }}
         >
-          <img src="icon-384x384.png" alt="Okayeg" />
+          <img src={`panel/${game.id}.png`} alt="Okayeg" />
           <div>
             <h3>
               {#if !$settings.seenGames?.includes(game.id)}
@@ -90,6 +93,9 @@
     text-transform: uppercase;
     opacity: 0.7;
   }
+  h3 {
+    margin: 8px 0;
+  }
   h3 .badge {
     font-size: 50%;
     vertical-align: middle;
@@ -111,18 +117,24 @@
     display: none;
   }
   li img {
-    width: 80px;
-    height: 80px;
-    margin: auto 0;
+    width: 84px;
+    height: 84px;
+    border-color: var(--bs-btn-border-color);
+    border-style: solid;
+    border-width: 0px;
+    border-right-width: 1px;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    margin: auto 8px auto 0;
   }
   li p {
+    font-size: 90%;
     margin: 0;
   }
 
   .btn {
     margin: 4px 0;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: 0;
     text-align: left;
   }
 
@@ -139,7 +151,13 @@
       flex-flow: column nowrap;
     }
     li img {
-      margin: 0 auto;
+      margin: 16px auto 0 auto;
+      border-width: 1px;
+      border-radius: 6px;
+    }
+    .btn {
+      padding: 0 8px 8px 8px;
+      text-align: center;
     }
   }
 </style>

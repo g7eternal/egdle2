@@ -1,6 +1,7 @@
 import { BaseGame } from "./baseClasses";
-import { cellColors, emoji } from "./consts";
-import { sample } from "../utils/common";
+import { cellColors, emoji, today } from "./consts";
+import { recordSeenGame } from "../utils/settings";
+import { sample, sfc32 } from "../utils/common";
 import {
   migrateClassicField,
   migrateClassicSettings,
@@ -10,6 +11,7 @@ import {
 import Helper from "./help/Classic.svelte";
 import Stats from "./stats/Classic.svelte";
 import GameOver from "./gameover/Classic.svelte";
+import TopBar from "./topbar/Classic.svelte";
 
 class Egdle extends BaseGame {
   constructor() {
@@ -17,11 +19,11 @@ class Egdle extends BaseGame {
     this.id = "egdle";
     this.name = "Egdle Classic";
     this.kind = "daily";
-    this._prngFactor = 1e16; // legacy stuff
 
     this.helperComponent = Helper;
     this.statsComponent = Stats;
     this.gameOverComponent = GameOver;
+    this.topBarComponent = TopBar;
 
     this.settings = {
       hardMode: false,
@@ -89,6 +91,23 @@ class Egdle extends BaseGame {
     return this;
   }
 
+  initRNG() {
+    if (this.issue < 369) {
+      // this function follows old egdle prng algorithm
+      this._prngFactor = 1e16;
+      this._prng = sfc32(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+        today.getDay() + 1
+      );
+    } else {
+      console.log("Egdle Classic: using new seeded RNG algorithm");
+      super.initRNG();
+    }
+    return this;
+  }
+
   endGame(result, skipRecording) {
     super.endGame(result, skipRecording);
 
@@ -114,16 +133,18 @@ class Egdle extends BaseGame {
       str += " in " + this.stats.lastClicks;
     }
 
-    const winrate = (100 * this.stats.wins) / Math.max(this.stats.games, 1);
+    if (this.stats.games > 0) {
+      const winrate = (100 * this.stats.wins) / Math.max(this.stats.games, 1);
 
-    str += `\n🥚 Eggs: ${this.stats.wins} (${winrate.toPrecision(4)}%)`;
-    str += ` / Streak: ${this.stats.streak}`;
+      str += `\n🥚 Eggs: ${this.stats.wins} (${winrate.toPrecision(4)}%)`;
+      str += ` / Streak: ${this.stats.streak}`;
 
-    str += `\n🧮 Avg: ${this.stats.avgClicks.toFixed(2)} `;
-    str += `Min: ${this.stats.minClicks} `;
-    str += `Max: ${this.stats.maxClicks}\n`;
+      str += `\n🧮 Avg: ${this.stats.avgClicks.toFixed(2)} `;
+      str += `Min: ${this.stats.minClicks} `;
+      str += `Max: ${this.stats.maxClicks} `;
+    }
 
-    str += window.location.origin + window.location.pathname;
+    str += "\n" + window.location.origin + window.location.pathname;
 
     return str;
   }
@@ -195,5 +216,6 @@ class Egdle extends BaseGame {
 let game = null;
 export function getInstance() {
   if (!game) game = new Egdle();
+  recordSeenGame(game.id);
   return game;
 }

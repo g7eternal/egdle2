@@ -1,19 +1,26 @@
 <script>
-  import currentGame from "../utils/state";
-  import tippy from "../utils/tippy";
+  import currentGame from "$lib/utils/state";
+
+  let overflow = 0;
+  $: {
+    overflow = $currentGame.clicks - $currentGame.field.size;
+  }
 </script>
 
 <div class="bar">
   <div class="section left">
-    {#if $currentGame.settings.hardMode}
-      <span use:tippy={{ content: "Hard mode!" }}>♨️</span>
-    {/if}
     🥚 {$currentGame.name}
     <b>#{$currentGame.issue}</b>
   </div>
   <div class="section right">
     Clicks:
     <b class="text-success">{$currentGame.clicks}</b>
+    &nbsp;
+    {#if overflow >= 0}
+      <span class:text-warning={overflow > 24} class:text-secondary={overflow < 12}>
+        +{overflow}
+      </span>
+    {/if}
   </div>
 </div>
 

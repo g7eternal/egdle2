@@ -1,23 +1,8 @@
 <script>
   import Stats from "../stats/Classic.svelte";
   import game from "../../utils/state";
+  import { resultFlavorTexts as flavors } from "../consts";
   import DailyCountdown from "../../elements/DailyCountdown.svelte";
-
-  const flavors = [
-    "Wow, that was amazing!",
-    "Impressive!",
-    "Very nice!",
-    "Good job!",
-    "Solid performance today!",
-    "Nice try!",
-    "That was OK.",
-    "Not bad. Not good either.",
-    "Much room for improvement.",
-    "Come on, you can do better than that.",
-    "That was… bad. Really bad.",
-    "You are just having a bad day, aren't you?",
-    "<img src='emotes/forsenswa.webp' alt='' width='24' height='24'> Unlucky.",
-  ];
 </script>
 
 {#if $game.result}

@@ -86,6 +86,15 @@ export function toggleDarkMode(newState) {
   });
 }
 
+export function recordSeenGame(id) {
+  if (!id) return;
+
+  settings.update((s) => {
+    if (!s.seenGames.includes(id)) s.seenGames.push(id);
+    return s;
+  });
+}
+
 export function recordAnnouncements(annoList = []) {
   if (!annoList.length) return;
 

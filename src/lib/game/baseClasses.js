@@ -1,27 +1,9 @@
-import { nullFunction, emoji, today, gameCreatedDate } from "./consts";
+import { nullFunction, emoji, today } from "./consts";
 import { forceUpdateDOM } from "../utils/state";
 import { sample } from "../utils/common";
+import seedrandom from "seedrandom";
 
 const CELL_ACTIVATION_DELAY = 300; // should roughly equal to css transition time in FieldCell.svelte
-
-// legacy pseudo random number generator
-// https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
-function sfc32(a, b, d, c) {
-  return function () {
-    a >>>= 0;
-    b >>>= 0;
-    c >>>= 0;
-    d >>>= 0;
-    let t = (a + b) | 0;
-    a = b ^ (b >>> 9);
-    b = (c + (c << 3)) | 0;
-    c = (c << 21) | (c >>> 11);
-    d = (d + 1) | 0;
-    t = (t + d) | 0;
-    c = (c + t) | 0;
-    return (t >>> 0) / 4294967296;
-  };
-}
 
 export class BaseCell {
   constructor(content = "") {
@@ -32,8 +14,9 @@ export class BaseCell {
     this.clicks = 0;
     this.winner = false;
     this.loser = false;
+
     this.bgcolor = "";
-    this._prevBgColor = "";
+    this.color = "";
 
     this._timers = {
       hider: null,
@@ -75,7 +58,16 @@ export class BaseCell {
   }
 
   toJSON() {
-    const listOfProps = ["content", "enabled", "visible", "clicks", "winner", "loser", "bgcolor"];
+    const listOfProps = [
+      "content",
+      "enabled",
+      "visible",
+      "clicks",
+      "winner",
+      "loser",
+      "bgcolor",
+      "color",
+    ];
 
     const simpleObject = {};
     listOfProps.forEach((prop) => {
@@ -111,6 +103,19 @@ export class BaseField {
     return this;
   }
 
+  showCells() {
+    this.cells.forEach((f) => {
+      f.visible = true;
+    });
+    return this;
+  }
+  hideCells() {
+    this.cells.forEach((f) => {
+      f.visible = false;
+    });
+    return this;
+  }
+
   getTotalClicks() {
     return this.cells.reduce((ac, cell) => ac + cell.clicks, 0);
   }
@@ -132,7 +137,10 @@ export class BaseGame {
     this.id = "baseGame";
     this.name = "Egdle";
     this.kind = "base";
-    this.issue = Math.floor((today.getTime() - gameCreatedDate.getTime()) / (1000 * 3600 * 24));
+
+    this.issue = 0;
+    this.firstIssueDate = 0;
+    this.refreshIssueNumber("2022-04-01T00:00:00"); // egdle v1 started on 01.Apr
 
     this.field = new BaseField();
 
@@ -152,11 +160,12 @@ export class BaseGame {
     };
 
     this.clicks = 0;
-    this.gameOver = false;
     this.result = null;
+    this.gameOver = false;
+    this._gameOverScreenSeen = false;
 
     this._prng = nullFunction;
-    this._prngFactor = 1e10;
+    this._prngFactor = 1;
 
     this.startTime = 0;
     this.timeLimit = 0;
@@ -165,6 +174,12 @@ export class BaseGame {
 
     // list of properties which would go into localStorage:
     this._storedProperties = ["field", "settings", "stats", "gameOver", "result"];
+  }
+
+  refreshIssueNumber(newFirstDate) {
+    this.firstIssueDate = new Date(newFirstDate);
+    this.issue = Math.floor((today.getTime() - this.firstIssueDate.getTime()) / (1000 * 3600 * 24));
+    return this;
   }
 
   getShareableData() {
@@ -177,20 +192,21 @@ export class BaseGame {
     return this.saveState();
   }
 
-  initRNG(seed = 0) {
-    // this function follows old egdle prng algorithm
-    this._prng = sfc32(
-      today.getFullYear() + seed,
-      today.getMonth() + seed,
-      today.getDate() + seed,
-      today.getDay() + seed + 1
-    );
+  initRNG() {
+    const seed = [
+      this.id,
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+      today.getDay(),
+    ].join("-");
+    this._prng = new seedrandom(seed);
     return this;
   }
 
   getRandomInt(baseOf = 0) {
     const random = this._prngFactor * this._prng();
-    if (!baseOf) return Math.floor(random);
+    if (!baseOf) return Math.floor(random); // is always zero?
     return Math.floor(baseOf * random) % baseOf;
   }
 
@@ -273,6 +289,7 @@ export class BaseGame {
 
   saveState() {
     this.stats.lastVisit = new Date();
+    this.stats.lastIssue = this.issue;
 
     const jsonString = JSON.stringify(this);
 

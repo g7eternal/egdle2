@@ -4,12 +4,11 @@
   import game from "../utils/state";
   import GameOverInfo from "./GameOverInfo.svelte";
   import FieldCell from "../elements/FieldCell.svelte";
-  import GameStatBar from "../elements/GameStatBar.svelte";
 
   let gameOverModalElement, gameOverModal, gameOverModalTimer;
-  let gameOverShown = false;
 
-  $: if (!gameOverShown && $game.gameOver) {
+  $: if (!$game._gameOverScreenSeen && $game.gameOver) {
+    $game._gameOverScreenSeen = true;
     gameOverModalTimer = setTimeout(() => gameOverModal.show(), 800);
   }
 
@@ -24,10 +23,10 @@
 </script>
 
 <div in:fly={{ duration: 200, y: 20 }}>
-  <GameStatBar />
+  <svelte:component this={$game.topBarComponent} />
   <div class="field" style:grid-template-columns={`repeat(${$game.field.width}, min-content)`}>
-    {#each $game.field.cells as cell}
-      <FieldCell {cell} />
+    {#each $game.field.cells as cell, cellIndex}
+      <FieldCell {cell} focused={$game._activeCell === cellIndex} />
     {/each}
   </div>
 </div>

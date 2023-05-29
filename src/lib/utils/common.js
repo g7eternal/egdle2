@@ -35,3 +35,22 @@ export function isMobileClient() {
     )
   );
 }
+
+// legacy pseudo random number generator
+// https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
+export function sfc32(a, b, d, c) {
+  return function () {
+    a >>>= 0;
+    b >>>= 0;
+    c >>>= 0;
+    d >>>= 0;
+    let t = (a + b) | 0;
+    a = b ^ (b >>> 9);
+    b = (c + (c << 3)) | 0;
+    c = (c << 21) | (c >>> 11);
+    d = (d + 1) | 0;
+    t = (t + d) | 0;
+    c = (c + t) | 0;
+    return (t >>> 0) / 4294967296;
+  };
+}

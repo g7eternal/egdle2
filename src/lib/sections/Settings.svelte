@@ -58,7 +58,7 @@
 
   {#if devMode}
     <hr />
-    <h6 class="mb-4 text-center">Developer mode options</h6>
+    <h6 class="text-center">Developer mode options</h6>
     <div class="d-flex justify-content-center">
       <DevModeButtons />
     </div>
