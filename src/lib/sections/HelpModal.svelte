@@ -16,7 +16,14 @@
       <svelte:component this={$game.helperComponent} />
     {:else}
       <h4>
-        <b>🥚 Egdle</b> Game Hub 🥚
+        <img
+          class="align-text-bottom me-1"
+          src="/pics/icon/favicon-32x32.png"
+          alt="Okayeg"
+          width="28"
+          height="28"
+        />
+        <b>Egdle</b> Game Hub 🥚
       </h4>
       <p>
         A collection of mini-games with eggs.<br />
@@ -25,6 +32,11 @@
       <p>
         Information about each game is available inside: select any game, then click the
         <b><MaterialIcon>help_outline</MaterialIcon> Help</b> icon.
+      </p>
+      <p>
+        Most games will require basic interaction by means of <em>clicking</em> or <em>tapping</em>.
+        Use left mouse button to click stuff, or your touch screen to tap stuff. Simple enough,
+        right?
       </p>
       <p>
         <b><MaterialIcon>settings</MaterialIcon> Settings</b> menu allows you to customize your experience.

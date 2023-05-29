@@ -8,7 +8,7 @@
     <h5 class="modal-title fs-5" id="mdlGameOverTitle">
       <img
         class="align-text-bottom me-1"
-        src="icon/favicon-32x32.png"
+        src="/pics/icon/favicon-32x32.png"
         alt="Okayeg"
         width="28"
         height="28"
