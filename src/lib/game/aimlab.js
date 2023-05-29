@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 import { BaseGame } from "./baseClasses";
 import { recordSeenGame } from "../utils/settings";
-import { formatTimer, shuffle, sampleValue } from "../utils/common";
+import { formatTimer, shuffle, sampleValue, isMobileClient } from "../utils/common";
 import { cellColors, emoji } from "./consts";
 import { forceUpdateDOM } from "../utils/state";
 
@@ -165,6 +165,10 @@ class Aimlab extends BaseGame {
 
   getShareableData() {
     let str = "🥚 " + this.name;
+
+    if (isMobileClient()) {
+      str += " 📱";
+    }
 
     if (this.stats.runs > 0) {
       str += `\n🏁 Last run: ${formatTimer(this.stats.lastTime, true)} (~${Math.round(
