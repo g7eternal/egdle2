@@ -39,7 +39,8 @@
 
     <hr />
     <div class="authorship text-muted">
-      Egdle Game Hub created with <MaterialIcon color="#c99" size="16px">favorite</MaterialIcon> by
+      <a href="https://github.com/g7eternal/egdle2" rel="noreferrer" target="_blank">Egdle Game Hub</a>
+      created with <MaterialIcon color="#c99" size="16px">favorite</MaterialIcon> by
       <a href="https://g7eternal.com/" rel="noreferrer" target="_blank" translate="no">G7Eternal</a>
     </div>
   </div>

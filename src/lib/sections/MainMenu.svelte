@@ -121,7 +121,9 @@
     g7eternal#8037
   </span>
   or
-  <a class="contact" href="mailto:egdle@g7eternal.com" title="Send email">drop an email</a>
+  <a class="contact" href="https://github.com/g7eternal/egdle2/issues" title="Go to Github" target="_blank">
+    create a ticket
+  </a>
   with your ideas
 </p>
 
