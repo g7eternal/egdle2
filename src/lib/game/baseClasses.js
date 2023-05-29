@@ -354,8 +354,21 @@ export class BaseGame {
 
       // restore basic props
       for (let key in storedData) {
-        if (key === "field") continue; // field needs special treatment
-        this[key] = storedData[key];
+        switch (key) {
+          case "field": {
+            continue; // field needs special treatment
+          }
+          case "settings": {
+            // apply all custom settings on top of default options - in case new settings were added
+            for (let option in this.settings) {
+              if (option in storedData.settings) this.settings[option] = storedData.settings[option];
+            }
+            break;
+          }
+          default: {
+            this[key] = storedData[key];
+          }
+        }
       }
 
       // restore field
