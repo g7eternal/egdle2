@@ -59,7 +59,7 @@
 <style>
   .okayeg {
     position: fixed;
-    z-index: 20;
+    z-index: 9900;
     bottom: -8px;
     left: -8px;
     width: 120px;

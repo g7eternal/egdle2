@@ -3,6 +3,7 @@ import { writable } from "svelte/store";
 import { showAdviceFriend } from "./adviceFriend";
 import { chooseAnnouncementOnLoad } from "./announcements";
 import { migrateSettings } from "./migrateV1";
+import { dailyEggFactRequired, tryShowDailyEggFact } from "./dailyFact";
 
 const lsKey = "egdle2-settings";
 
@@ -11,6 +12,7 @@ const defaultSettings = {
   firstVisit: true,
   announcements: [],
   seenGames: ["classic"],
+  lastVisit: new Date(),
 };
 
 export const settings = writable(Object.assign({}, defaultSettings));
@@ -33,6 +35,9 @@ try {
   settings.update((s) => {
     for (let key in parsedSettings) {
       if (key in defaultSettings) s[key] = parsedSettings[key];
+      if (defaultSettings[key] instanceof Date) {
+        s[key] = new Date(s[key]);
+      }
     }
 
     return s;
@@ -67,6 +72,11 @@ try {
     s.announcements = adviceData.seen;
     if (adviceData.announce) {
       showAdviceFriend(adviceData.announce.text, adviceData.announce.header);
+    }
+
+    // if no announcements, show daily egg fact
+    if (!adviceData.announce && dailyEggFactRequired(s.lastVisit)) {
+      tryShowDailyEggFact();
     }
 
     return s;

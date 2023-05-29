@@ -1,6 +1,7 @@
 <script>
   import MaterialIcon from "./MaterialIcon.svelte";
   import currentGame, { forceUpdateDOM } from "../utils/state";
+  import { tryShowDailyEggFact } from "../utils/dailyFact";
 
   function doFullAppReset() {
     localStorage.clear();
@@ -25,6 +26,10 @@
 </script>
 
 <div class="d-flex flex-wrap justify-content-center">
+  <button class="btn btn-outline-secondary" on:click={tryShowDailyEggFact}>
+    🥚 Show random egg fact
+  </button>
+
   <button class="btn btn-secondary" on:click={forceChromaKey}>
     <MaterialIcon>gradient</MaterialIcon>
     Toggle chroma key
