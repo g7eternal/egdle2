@@ -16,15 +16,16 @@ export const emoji = {
 
 export const cellColors = {
   //empty: "rgba(0, 0, 0, 0)",
-  red: "rgba(192, 96, 96, 0.2)",
-  orange: "rgba(160, 128, 96, 0.3)",
-  yellow: "rgba(160, 160, 96, 0.3)",
-  purple: "rgba(136, 64, 192, 0.2)",
-  green: "rgba(96, 192, 96, 0.2)",
-  blue: "rgba(96, 96, 192, 0.3)",
-  gray: "rgba(140, 140, 140, 0.2)",
-  cyan: "rgba(96, 192, 192, 0.3)",
-  brown: "rgba(128, 96, 64, 0.2)",
+  red: "rgba(192, 96, 96, 0.33)",
+  orange: "rgba(160, 128, 96, 0.33)",
+  yellow: "rgba(160, 160, 96, 0.33)",
+  purple: "rgba(136, 64, 192, 0.33)",
+  green: "rgba(96, 192, 96, 0.33)",
+  blue: "rgba(96, 96, 192, 0.33)",
+  gray: "rgba(140, 140, 140, 0.33)",
+  cyan: "rgba(96, 192, 192, 0.33)",
+  brown: "rgba(128, 96, 64, 0.33)",
+  pink: "rgba(172, 64, 128, 0.33)",
 };
 
 export const resultFlavorTexts = [
