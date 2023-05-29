@@ -1,0 +1,61 @@
+/* generic styles */
+a {
+  text-decoration: none;
+}
+
+* {
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(74, 98, 71, 0.2);
+  border: 2px solid rgba(74, 98, 71, 0.5);
+  border-radius: 1em;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(74, 98, 71);
+}
+::-webkit-scrollbar-track {
+  background: none;
+  border: none;
+}
+
+/* restyle bootstrap: */
+[data-bs-theme="light"] {
+  --bs-primary-text: #00aa31;
+  --bs-link-hover-color: #00aa31;
+  --bs-link-hover-color-rgb: 0, 170, 49;
+  --bs-link-color: #00aa31;
+  --bs-link-color-rgb: 0, 170, 49;
+}
+[data-bs-theme="dark"] {
+  --bs-body-bg: #212121;
+  --bs-body-bg-rgb: 32, 32, 32;
+  --bs-primary-text: #00ea31;
+  --bs-link-hover-color: #00ea31;
+  --bs-link-hover-color-rgb: 0, 234, 49;
+  --bs-link-color: #00ea31;
+  --bs-link-color-rgb: 0, 234, 49;
+}
+
+/* tippy.js */
+.tippy-box {
+  padding: 4px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 80%;
+  box-shadow: 0px 0px 8px rgba(96, 96, 96, 0.2) !important;
+}
+.tippy-box[data-theme~="material"] {
+  background: var(--bs-light) !important;
+  color: var(--bs-dark) !important;
+  font-weight: normal !important;
+  border: 0 !important;
+  box-shadow: 0px 0px 2px var(--bs-gray) !important;
+}
+.tippy-box[data-theme~="material"] > .tippy-svg-arrow {
+  fill: var(--bs-gray) !important;
+}
