@@ -93,11 +93,15 @@ class Puzzle extends BaseGame {
       cell.color = "gray";
       cell.bgcolor = cellColors[cell.color];
 
-      cell.visible = false;
-      cell.enabled = false;
-
       cell.puzzleId = i + 1;
-      if (cell.puzzleId === this.field.size) cell.puzzleId = 0;
+      if (cell.puzzleId === this.field.size) {
+        cell.puzzleId = 0;
+        this._emptyCell = cell; // remember reference for swapTwoCells()
+      }
+      if (this.settings.numericMode) cell.content = cell.puzzleId || "";
+
+      cell.visible = cell.puzzleId > 0;
+      cell.enabled = false;
     });
     return this;
   }
@@ -157,18 +161,6 @@ class Puzzle extends BaseGame {
       }
       console.log(`Puzzle: found valid starting position after ${attemptCount} tries.`);
     }
-
-    this.field.cells.forEach((cell) => {
-      if (cell.puzzleId > 0) {
-        if (this.settings.numericMode) cell.content = cell.puzzleId;
-        cell.visible = true;
-      } else {
-        cell.content = "";
-        cell.visible = false;
-        // remember the reference for callbacks:
-        this._emptyCell = cell;
-      }
-    });
 
     return this;
   }
