@@ -117,7 +117,7 @@
   <br />
   Contact me at
   <span class="contact discord" title="Discord" translate="no">
-    <img src="pics/icon/discord.svg" alt="Discord" aria-label="Discord icon" width="32" height="32" />
+    <img src="/pics/icon/discord.svg" alt="Discord" aria-label="Discord icon" width="32" height="32" />
     g7eternal#8037
   </span>
   or
