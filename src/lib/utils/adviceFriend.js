@@ -1,7 +1,6 @@
 import { browser } from "$app/environment"; // sveltekit environment
+import { nullFunction } from "../game/consts";
 import AdviceFriend from "$lib/elements/AdviceFriend.svelte";
-
-const nullFunction = () => {};
 
 export function showAdviceFriend(content, title = "", sanitize = false) {
   if (!browser) return;
@@ -37,15 +36,14 @@ export function showConfirmAdviceFriend(content, buttonText = "OK", actionCallba
   if (!browser) return;
 
   const root = document.createElement("div");
-  root.classList = "d-flex flex-column";
+  root.classList = "d-flex flex-column fs-6 text-dark bg-white";
 
   const textContent = document.createElement("div");
   textContent.innerHTML = content;
-  textContent.classList = "fs-6 text-light";
   root.appendChild(textContent);
 
   const btn = document.createElement("button");
-  btn.classList = "btn btn-primary border-dark mt-1 my-auto";
+  btn.classList = "btn btn-success border-dark mt-1 my-auto";
   btn.innerHTML = buttonText;
   btn.addEventListener("click", function () {
     adviceFriend.$destroy();

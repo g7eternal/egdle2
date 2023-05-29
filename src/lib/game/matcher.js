@@ -14,7 +14,7 @@ class Matcher extends BaseGame {
     this.name = "Egdle Matcher";
     this.kind = "daily";
 
-    this.refreshIssueNumber("2022-04-03T00:00:00");
+    this.refreshIssueNumber("2023-04-01T00:00:00");
 
     this.helperComponent = Helper;
     this.statsComponent = Stats;
@@ -29,7 +29,7 @@ class Matcher extends BaseGame {
     };
 
     this._storedProperties.push("activeCell");
-    this._activeCell = -1;
+    this.activeCell = -1;
 
     // calculate win/lose conditions:
     this.initRNG(1);
@@ -64,9 +64,9 @@ class Matcher extends BaseGame {
       cell.clickCallback = function () {
         gameInstance.clicks += 1;
 
-        if (gameInstance._activeCell >= 0) {
+        if (gameInstance.activeCell >= 0) {
           // perform a match check with active cell
-          const activeCell = gameInstance.field.cells[gameInstance._activeCell];
+          const activeCell = gameInstance.field.cells[gameInstance.activeCell];
 
           if (activeCell.color === this.color && activeCell.content === this.content) {
             activeCell.winner = true;
@@ -79,10 +79,10 @@ class Matcher extends BaseGame {
             this.hideAfter(1000);
           }
 
-          gameInstance._activeCell = -1;
+          gameInstance.activeCell = -1;
         } else {
           // mark cell as active
-          gameInstance._activeCell = i;
+          gameInstance.activeCell = i;
         }
 
         gameInstance.saveState();
@@ -122,8 +122,8 @@ class Matcher extends BaseGame {
     this.clicks = this.field.getTotalClicks();
     this.stats.lastClicks = this.clicks;
 
-    this.field.cells.forEach((cell) => {
-      if (cell.winner) {
+    this.field.cells.forEach((cell, index) => {
+      if (cell.winner || index === this.activeCell) {
         cell.bgcolor = cellColors[cell.color];
         cell.visible = true;
         cell.enabled = false;

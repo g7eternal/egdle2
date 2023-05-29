@@ -1,11 +1,10 @@
 <script>
-  import game from "../utils/state";
+  import game, { forceUpdateDOM } from "../utils/state";
   export let cell;
   export let focused = false;
 
   function doClickCell(cell) {
-    cell.click();
-    $game = $game; // trigger full update
+    if (cell.click()) forceUpdateDOM();
   }
 </script>
 

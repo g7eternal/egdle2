@@ -5,6 +5,7 @@
 
   import { getInstance as egdle } from "../game/classic";
   import { getInstance as matcher } from "../game/matcher";
+  import { getInstance as pattern } from "../game/pattern";
 
   import game from "../utils/state";
 
@@ -37,7 +38,7 @@
         },
         {
           id: "pattern",
-          init: nullFunction,
+          init: pattern,
           name: "Patterns",
           desc: "A fun test: how many eggs can you store in your memory?",
         },
@@ -66,10 +67,10 @@
           <img src={`panel/${game.id}.png`} alt="Okayeg" />
           <div>
             <h3>
+              {game.name}
               {#if !$settings.seenGames?.includes(game.id)}
                 <span class="badge bg-success">New!</span>
               {/if}
-              {game.name}
             </h3>
             <p>{game.desc}</p>
           </div>

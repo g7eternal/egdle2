@@ -26,7 +26,7 @@
   <svelte:component this={$game.topBarComponent} />
   <div class="field" style:grid-template-columns={`repeat(${$game.field.width}, min-content)`}>
     {#each $game.field.cells as cell, cellIndex}
-      <FieldCell {cell} focused={$game._activeCell === cellIndex} />
+      <FieldCell {cell} focused={$game.activeCell === cellIndex} />
     {/each}
   </div>
 </div>

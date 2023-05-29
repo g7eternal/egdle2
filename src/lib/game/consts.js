@@ -8,12 +8,14 @@ export const emoji = {
   death: "🍳",
   good: "🥚",
   egs: ["🍳", "🥚", "🪺"],
+  life: "💚",
+  unlife: "🖤",
   hardMode: "♨️",
   easyMode: "⭐",
 };
 
 export const cellColors = {
-  empty: "rgba(0, 0, 0, 0)",
+  //empty: "rgba(0, 0, 0, 0)",
   red: "rgba(192, 96, 96, 0.2)",
   yellow: "rgba(160, 160, 96, 0.3)",
   purple: "rgba(136, 64, 192, 0.2)",

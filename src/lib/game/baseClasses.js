@@ -87,7 +87,12 @@ export class BaseField {
 
     this.size = this.width * this.height;
 
+    this.reset();
+  }
+
+  reset() {
     this.cells = new Array(this.size).fill(null).map(() => new BaseCell(sample(emoji.food)));
+    return this;
   }
 
   enableCells() {
@@ -121,8 +126,8 @@ export class BaseField {
   }
 
   setCellClickCallback(callback) {
-    this.cells.forEach((f) => {
-      f.clickCallback = callback;
+    this.cells.forEach((cell) => {
+      cell.clickCallback = callback;
     });
     return this;
   }
@@ -137,6 +142,12 @@ export class BaseGame {
     this.id = "baseGame";
     this.name = "Egdle";
     this.kind = "base";
+
+    // subclasses should override these component references:
+    this.helperComponent = null;
+    this.statsComponent = null;
+    this.gameOverComponent = null;
+    this.topBarComponent = null;
 
     this.issue = 0;
     this.firstIssueDate = 0;
@@ -309,7 +320,7 @@ export class BaseGame {
       }
 
       // restore field
-      if (this.stats.lastIssue === this.issue) {
+      if (this.kind === "daily" && this.stats.lastIssue === this.issue) {
         try {
           const storedCells = storedData.field.cells;
           storedCells.forEach((cellData, idx) => {
