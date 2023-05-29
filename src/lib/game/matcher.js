@@ -6,6 +6,7 @@ import Helper from "./help/Matcher.svelte";
 import Stats from "./stats/Matcher.svelte";
 import GameOver from "./gameover/Matcher.svelte";
 import TopBar from "./topbar/Matcher.svelte";
+import { showAdviceFriend } from "../utils/adviceFriend";
 
 class Matcher extends BaseGame {
   constructor() {
@@ -77,6 +78,11 @@ class Matcher extends BaseGame {
           } else {
             activeCell.hideAfter(1000);
             this.hideAfter(1000);
+          }
+
+          // forsenLaughingAtYou
+          if (!gameInstance.gameOvre && gameInstance.clicks === 100) {
+            showAdviceFriend("U nab? 💢");
           }
 
           gameInstance.activeCell = -1;

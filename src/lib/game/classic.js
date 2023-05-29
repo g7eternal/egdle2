@@ -12,6 +12,7 @@ import Helper from "./help/Classic.svelte";
 import Stats from "./stats/Classic.svelte";
 import GameOver from "./gameover/Classic.svelte";
 import TopBar from "./topbar/Classic.svelte";
+import { showAdviceFriend } from "../utils/adviceFriend";
 
 class Egdle extends BaseGame {
   constructor() {
@@ -119,6 +120,9 @@ class Egdle extends BaseGame {
         }
       });
     }
+
+    // forsenLaughingAtYou
+    if (this.clicks > 32) showAdviceFriend("When nub plays Egdle...<br>That's a big problem.");
 
     return this;
   }
