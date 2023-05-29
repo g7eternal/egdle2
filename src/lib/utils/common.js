@@ -1,4 +1,5 @@
 import { browser } from "$app/environment";
+import dateFormat from "dateformat";
 
 export function shuffle(arr = []) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -53,4 +54,10 @@ export function sfc32(a, b, d, c) {
     c = (c + t) | 0;
     return (t >>> 0) / 4294967296;
   };
+}
+
+export function formatTimer(time, withMS = false) {
+  let timeString = dateFormat(time, "MM:ss");
+  if (withMS) timeString += "." + String(time % 1000 | 0).padStart(3, "0");
+  return timeString;
 }

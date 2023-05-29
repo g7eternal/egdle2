@@ -7,16 +7,9 @@ const CELL_ACTIVATION_DELAY = 300; // should roughly equal to css transition tim
 
 export class BaseCell {
   constructor(content = "") {
-    this.content = content;
     this.enabled = true;
-    this.visible = false;
 
-    this.clicks = 0;
-    this.winner = false;
-    this.loser = false;
-
-    this.bgcolor = "";
-    this.color = "";
+    this.clear(content, true);
 
     this._timers = {
       hider: null,
@@ -27,6 +20,21 @@ export class BaseCell {
       console.log("Click recorded. Cell:", this);
       return this;
     };
+  }
+
+  clear(content = "", withClicks = false) {
+    this.content = content;
+    this.visible = false;
+
+    this.bgcolor = "";
+    this.color = "";
+
+    this.winner = false;
+    this.loser = false;
+
+    if (withClicks) this.clicks = 0;
+
+    return this;
   }
 
   hideAfter(time = 0) {
@@ -226,6 +234,11 @@ export class BaseGame {
     return Math.floor(baseOf * random) % baseOf;
   }
 
+  resetTimer() {
+    this.startTime = 0;
+    this.stopTimer();
+    return this;
+  }
   startTimer(time = 0) {
     if (!this.startTime) this.startTime = Date.now();
     this.timeLimit = time;
@@ -255,10 +268,11 @@ export class BaseGame {
     this.result = Boolean(result);
 
     this.field.disableCells();
-    this.clicks = this.field.getTotalClicks();
-    this.stats.lastClicks = this.clicks;
 
     if (!skipRecording) {
+      this.clicks = this.field.getTotalClicks();
+      this.stats.lastClicks = this.clicks;
+
       const restoredAvg = this.stats.games * this.stats.avgClicks;
 
       this.stats.games += 1;

@@ -6,6 +6,7 @@
   import { getInstance as egdle } from "../game/classic";
   import { getInstance as matcher } from "../game/matcher";
   import { getInstance as pattern } from "../game/pattern";
+  import { getInstance as filler } from "../game/filler";
 
   import game from "../utils/state";
 
@@ -31,16 +32,16 @@
       title: "Other games",
       list: [
         {
-          id: "sweeper",
-          init: nullFunction,
-          name: "Egg-sweeper",
-          desc: "A twist of a popular game - with eggs!",
-        },
-        {
           id: "pattern",
           init: pattern,
           name: "Patterns",
           desc: "A fun test: how many eggs can you store in your memory?",
+        },
+        {
+          id: "filler",
+          init: filler,
+          name: "Filler",
+          desc: "Fill the screen with eggs as quickly and efficiently as possible",
         },
       ],
     },

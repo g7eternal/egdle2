@@ -91,6 +91,13 @@ try {
     });
   }
 
+  // reset last visit date
+  settings.update((s) => {
+    s.lastVisit = new Date();
+
+    return s;
+  });
+
   // set ready flag to True as we finished parsing settings
   appReady.set(true);
 }

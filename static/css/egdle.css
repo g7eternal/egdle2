@@ -23,6 +23,10 @@ a {
   border: none;
 }
 
+.cursor-default {
+  cursor: default;
+}
+
 /* restyle bootstrap: */
 [data-bs-theme="light"] {
   --bs-primary-text: #00aa31;

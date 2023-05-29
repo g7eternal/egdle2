@@ -44,6 +44,15 @@ export const resultFlavorTexts = [
   "<img src='emotes/forsenswa.webp' alt='' width='24' height='24'> Unlucky.",
 ];
 
+/* Options descriptions for different game modes */
+
+const commonOptions = {
+  visualAidMode: {
+    title: "✴️ Visual aid",
+    desc: "Cell color will be displayed as text",
+  },
+};
+
 export const settingsLibrary = {
   egdle: {
     hardMode: {
@@ -53,9 +62,9 @@ export const settingsLibrary = {
     },
   },
   matcher: {
-    visualAidMode: {
-      title: "✴️ Visual aid",
-      desc: "Cell color will be displayed as text",
-    },
+    visualAidMode: commonOptions.visualAidMode,
+  },
+  filler: {
+    visualAidMode: commonOptions.visualAidMode,
   },
 };

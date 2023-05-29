@@ -48,14 +48,13 @@
     justify-content: center;
     text-shadow: 0px 0px 4px black;
     user-select: none;
-    pointer-events: none;
     filter: none;
     transform: none;
     transition: background-color 0.3s ease-out, color 0.3s ease, filter 0.3s ease-out,
       transform 0.3s ease-out;
   }
-  .cell.active {
-    pointer-events: all;
+  .cell:not(.active) {
+    cursor: not-allowed;
   }
   .cell.focused {
     transform: scale(1.05);
