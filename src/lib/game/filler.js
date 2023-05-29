@@ -102,6 +102,7 @@ class Filler extends BaseGame {
     starter.bgcolor = cellColors[this.activeColor];
 
     this.doColorFill(this.activeColor);
+    this.clicks -= 1; // fixes extra click count
 
     forceUpdateDOM();
     return this;
