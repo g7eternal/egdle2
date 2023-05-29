@@ -314,7 +314,7 @@ class Puzzle extends BaseGame {
     this.saveState();
 
     // re-enable "start game" button and grid picker
-    this.disabledSettings.remove("gridSizes");
+    this.disabledSettings.delete("gridSizes");
     this.displayTime.set(formatTimer(time, true));
     forceUpdateDOM();
     setTimeout(() => {
