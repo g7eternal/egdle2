@@ -7,6 +7,7 @@
   import { getInstance as egdle } from "../game/classic";
   import { getInstance as binary } from "../game/binary";
   import { getInstance as matcher } from "../game/matcher";
+  import { getInstance as jewels } from "../game/jewels";
   import { getInstance as pattern } from "../game/pattern";
   import { getInstance as filler } from "../game/filler";
   import { getInstance as aimlab } from "../game/aimlab";
@@ -41,6 +42,12 @@
       title: "Other games",
       list: [
         {
+          id: "jewels",
+          init: jewels,
+          name: "Egdle Crush",
+          desc: "Move the eggs around to create combos and increase your score",
+        },
+        {
           id: "aimlab",
           init: aimlab,
           name: "Reflex",
@@ -64,6 +71,7 @@
 
   function setGame(variant) {
     $game = variant.init();
+    $game?.unpause();
   }
 </script>
 

@@ -8,6 +8,7 @@ export const emoji = {
   death: "🍳",
   good: "🥚",
   egs: ["🍳", "🥚", "🪺"],
+  jewels: ["🐔", "🥩", "🥚", "🍗", "🍳", "🪺"],
   life: "💚",
   unlife: "🖤",
   hardMode: "♨️",
@@ -66,6 +67,13 @@ export const settingsLibrary = {
   },
   filler: {
     visualAidMode: commonOptions.visualAidMode,
+  },
+  jewels: {
+    visualAidMode: commonOptions.visualAidMode,
+    onlyEggMode: {
+      title: "🥚 OnlyEggs mode",
+      desc: "All the elements in this game will be rendered as eggs",
+    },
   },
   binary: {
     visualAidMode: commonOptions.visualAidMode,

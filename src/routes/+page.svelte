@@ -5,7 +5,8 @@
 
   import MainMenu from "$lib/sections/MainMenu.svelte";
   import NavBar from "$lib/sections/NavBar.svelte";
-  import EggField from "../lib/sections/EggField.svelte";
+  import EggField from "$lib/sections/EggField.svelte";
+  import InteractiveField from "$lib/sections/InteractiveField.svelte";
 
   function doOpenGame(event) {
     $game = event.detail;
@@ -22,7 +23,7 @@
     <NavBar />
 
     {#if $game}
-      <EggField />
+      <svelte:component this={$game.usesInteractiveField ? InteractiveField : EggField} />
     {:else}
       <MainMenu on:opengame={doOpenGame} />
     {/if}

@@ -26,6 +26,7 @@
   .section {
     flex: 1 0 auto;
     text-align: center;
+    font-size: 20px;
   }
 
   @media all and (max-width: 400px) {

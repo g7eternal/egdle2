@@ -82,7 +82,7 @@ class Matcher extends BaseGame {
           }
 
           // forsenLaughingAtYou
-          if (!gameInstance.gameOvre && gameInstance.clicks === 100) {
+          if (!gameInstance.gameOver && gameInstance.clicks === 100) {
             showAdviceFriend("U nab? 💢");
           }
 

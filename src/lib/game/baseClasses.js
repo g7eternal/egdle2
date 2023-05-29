@@ -319,6 +319,11 @@ export class BaseGame {
     return this;
   }
 
+  unpause() {
+    // override this in subclasses!
+    return this;
+  }
+
   toJSON() {
     const simpleObject = {};
     this._storedProperties.forEach((prop) => {

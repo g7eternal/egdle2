@@ -57,6 +57,8 @@
 
 <style>
   .cell {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol";
     font-size: 28px;
     width: 90px;
     max-width: 15vw;
