@@ -270,21 +270,22 @@ class Puzzle extends BaseGame {
     this.field.cells[c2Index] = c1;
     this.clicks += 1;
 
-    // schedule a combo check after animation ends:
+    const isGameWon = this.checkWinCondition();
+    if (isGameWon) {
+      this.endGame(true);
+    } else {
+      c1.enabled = true;
+      c2.enabled = true;
+    }
+
+    // schedule travel flag update after animation ends:
     setTimeout(() => {
       c1.isTraveling = false;
       c2.isTraveling = false;
-
-      this.checkWinCondition().then((isGameWon) => {
-        c1.enabled = true;
-        c2.enabled = true;
-        if (isGameWon) this.endGame(true);
-        forceUpdateDOM();
-      });
     }, 300);
   }
 
-  async checkWinCondition() {
+  checkWinCondition() {
     // each cell must be in its own position (cell 1 in index 0, etc)
     // except for invisible (empty) cell - it must be last
     return this.field.cells.every((cell, i) => i + 1 === (cell.puzzleId === 0 ? this.field.size : cell.puzzleId));
@@ -304,7 +305,7 @@ class Puzzle extends BaseGame {
     const restoredAvgTime = statRef.runs * statRef.avgTime;
     const restoredAvgClicks = statRef.runs * statRef.avgClicks;
 
-    statRef.runs += 1;
+    statRef.runs = Math.min(statRef.games, statRef.runs + 1); // fixup: double endGame bug might have messed up the stats a bit
     statRef.lastClicks = this.clicks;
     statRef.lastTime = time;
     statRef.avgTime = (restoredAvgTime + statRef.lastTime) / statRef.runs;
