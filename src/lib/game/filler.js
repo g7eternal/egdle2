@@ -224,7 +224,7 @@ class Filler extends BaseGame {
     if (this.stats.runs > 0) {
       str += `\n🏁 Last run: ${formatTimer(this.stats.lastTime, true)} (${this.stats.lastClicks})`;
       str += `\nAverage in ${this.stats.runs} runs:`;
-      str += `\n⏱️ ~${formatTimer(this.stats.lastTime, true)}`;
+      str += `\n⏱️ ~${formatTimer(this.stats.avgTime, true)}`;
       str += `\n👆 ~${this.stats.avgClicks.toFixed(2)} clicks`;
       str += `\nPersonal best:`;
       str += `\n⏱️🎖️ ${formatTimer(this.stats.bestTime, true)}`;

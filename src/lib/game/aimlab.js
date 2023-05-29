@@ -177,7 +177,7 @@ class Aimlab extends BaseGame {
       if (Math.round(this.stats.lastClickTime) === Math.round(this.stats.bestClickTime))
         str += "🎖️";
       str += `\nAverage in ${this.stats.runs} runs:`;
-      str += `\n⏱️ ${formatTimer(this.stats.lastTime, true)}`;
+      str += `\n⏱️ ${formatTimer(this.stats.avgTime, true)}`;
       str += `\n👆 ${Math.round(this.stats.avgClickTime)}ms per click`;
       str += `\nPersonal best: ⏱️ ${formatTimer(this.stats.bestTime, true)}`;
     }
