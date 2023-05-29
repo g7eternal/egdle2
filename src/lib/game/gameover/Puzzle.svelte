@@ -3,6 +3,9 @@
   import game from "$lib/utils/state";
   import { formatTimer } from "$lib/utils/common";
   import Stats from "../stats/Puzzle.svelte";
+
+  let statRef;
+  $: statRef = $game.stats[$game.options.gridSizes[$game.settings.gridSizes]];
 </script>
 
 <p>👍 Good job! You've solved the puzzle!</p>
@@ -10,15 +13,15 @@
   <li>
     <MaterialIcon>timer</MaterialIcon>
     Time elapsed:
-    <b class="text-success">{formatTimer($game.stats.lastTime, true)}</b>
-    {#if $game.stats.lastTime > 0 && $game.stats.lastTime === $game.stats.bestTime}
+    <b class="text-success">{formatTimer(statRef.lastTime, true)}</b>
+    {#if statRef.lastTime > 0 && statRef.lastTime === statRef.bestTime}
       <span class="badge bg-success">🎖️ New best!</span>
     {/if}
   </li>
   <li>
     <MaterialIcon>ads_click</MaterialIcon>
-    <b class="text-success">{$game.stats.lastClicks}</b> swaps
-    {#if $game.stats.lastClicks > 0 && $game.stats.lastClicks === $game.stats.bestClicks}
+    <b class="text-success">{statRef.lastClicks}</b> swaps
+    {#if statRef.lastClicks > 0 && statRef.lastClicks === statRef.bestClicks}
       <span class="badge bg-success">🎖️ New best!</span>
     {/if}
   </li>

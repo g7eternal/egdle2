@@ -10,7 +10,7 @@
   let puzzleScale, puzzleOffset, puzzleX, puzzleY;
 
   $: {
-    const sizeOffset = 123;
+    const sizeOffset = 142 - 3 * $game.field.width;
     puzzleOffset = (cell.puzzleId || $game.field.size) - 1;
     puzzleScale = $game.field.width * sizeOffset + "% " + $game.field.height * sizeOffset + "%";
     puzzleX = 4 + (110 * (puzzleOffset % $game.field.width)) / $game.field.width + "%";

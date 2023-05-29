@@ -1,14 +1,24 @@
 const announcementList = {
+  /* ADD NEW ANNOUNCEMENTS BELOW THIS LINE
+  ==========================
+  */
+  puzzleGeneratorFix: {
+    text: "A hotfix has been applied for Puzzle game to fix the impossible positions. Also you can now change the grid size. 🥚",
+    header: "Puzzle mode fixed!",
+  },
+  /* 
+  ==========================
+  DO NOT ADD NEW ANNOUNCEMENTS BELOW THIS LINE 
+  */
+  firstVisit: {
+    text: `If you are new around here,<br>click the <b class="material-icons fs-5 align-text-bottom">help_outline</b> to get help.`,
+    header: "Psst... Yu hav eg?",
+  },
   firstReturnVisit: {
     header: "🎉 Egdle anniversary!",
     text: "Wow, it's been a year already! On this occasion, Egdle gets a bunch of new features and a fresh design. Enjoy!",
     important: true,
   },
-  firstVisit: {
-    text: `If you are new around here,<br>click the <b class="material-icons fs-5 align-text-bottom">help_outline</b> to get help.`,
-    header: "Psst... Yu hav eg?",
-  },
-  // add new announcements below this line
 };
 
 export function chooseAnnouncementOnLoad(seenAnnoList) {

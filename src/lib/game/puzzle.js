@@ -1,5 +1,5 @@
 import { writable } from "svelte/store";
-import { BaseGame } from "./baseClasses";
+import { BaseField, BaseGame } from "./baseClasses";
 import { formatTimer, shuffle } from "../utils/common";
 import { forceUpdateDOM } from "../utils/state";
 
@@ -24,11 +24,16 @@ class Puzzle extends BaseGame {
 
     this._storedProperties = ["settings", "stats"];
 
+    this.options = {
+      gridSizes: ["3x3", "4x4", "5x5", "6x6", "7x7"],
+    };
     this.settings = {
       allowFlicks: true,
       numericMode: false,
+      gridSizes: this.options.gridSizes.indexOf("6x6"),
     };
-    this.stats = {
+    // track stats separately per game mode:
+    this._statsProto = {
       games: 0,
       runs: 0,
       avgTime: 0,
@@ -38,14 +43,10 @@ class Puzzle extends BaseGame {
       bestTime: 0,
       bestClicks: 0,
     };
-
-    this.loadState().reset();
-    this.activeCell = null;
-    this.gameOver = true;
-    this._gameOverScreenSeen = true; // prevents instant gameover popup
-
-    this.displayTime = writable("00:00");
-    clearInterval(this._displayTimeInterval);
+    this.stats = this.options.gridSizes.reduce((statObject, size) => {
+      statObject[size] = Object.assign({}, this._statsProto);
+      return statObject;
+    }, {});
 
     const gameInstance = this;
     this._cellCallback = function () {
@@ -60,28 +61,52 @@ class Puzzle extends BaseGame {
 
       return true; // this updates DOM
     };
-    this.field.setCellClickCallback(this._cellCallback);
 
-    this.doInitialFill(false).field.showCells();
+    this.loadState().updateGridSize();
+    this.activeCell = null;
+    this.gameOver = true;
+    this._gameOverScreenSeen = true; // prevents instant gameover popup
+
+    this.displayTime = writable("00:00");
+    clearInterval(this._displayTimeInterval);
+
+    this.doInitialFill(false);
   }
 
   setOption(key, value) {
     super.setOption(key, value);
 
-    if (key === "numericMode") {
-      this.field.cells.forEach((cell) => {
-        if (value) {
-          cell.content = cell.puzzleId || ""; // shortcut sets zero cell as empty
-        } else cell.content = "";
-      });
-      forceUpdateDOM();
+    switch (key) {
+      case "numericMode": {
+        this.field.cells.forEach((cell) => {
+          if (value) {
+            cell.content = cell.puzzleId || ""; // shortcut sets zero cell as empty
+          } else cell.content = "";
+        });
+        forceUpdateDOM();
+        break;
+      }
+      case "gridSizes": {
+        this.updateGridSize();
+        forceUpdateDOM();
+        break;
+      }
     }
 
     return this;
   }
 
+  updateGridSize() {
+    const dimensions = this.options.gridSizes[this.settings.gridSizes].split("x");
+    this.field = new BaseField(+dimensions[0], +dimensions[1]);
+    this.field.setCellClickCallback(this._cellCallback);
+
+    return this.reset();
+  }
+
   reset() {
     this.gameOver = true;
+    this.disabledSettings.clear();
 
     this.clicks = 0;
 
@@ -107,10 +132,12 @@ class Puzzle extends BaseGame {
   }
 
   startNewRun() {
-    this.stats.games += 1;
+    const gridSize = this.options.gridSizes[this.settings.gridSizes];
+    this.stats[gridSize].games += 1;
     this.saveState();
 
     this.reset();
+    this.disabledSettings.add("gridSizes");
 
     this.gameOver = false;
     this.startTimer();
@@ -152,13 +179,40 @@ class Puzzle extends BaseGame {
           return total + inversions;
         }, 0);
 
-        hasSolution = (blankRowIndex + inversionCount) % 2 !== 0;
+        if (this.field.width % 2 === 0) {
+          /*
+          If N is even, puzzle instance is solvable if either
+           - the blank is on an even row (0-based row index) and number of inversions is odd
+           - the blank is on an odd row (0-based row index) and number of inversions is even
+          Hint: odd+even is always odd. Quick maths, innit?
+          */
+          hasSolution = (blankRowIndex + inversionCount) % 2 !== 0;
+        } else {
+          /*
+          If N is odd, then puzzle instance is solvable if number of inversions is even in the input state.
+          */
+          hasSolution = inversionCount % 2 === 0;
+        }
 
         if (attemptCount > 1e4) {
           console.warn("\nPossible infinite loop prevented at puzzle.doInitialFill() - puzzle may become unsolvable!");
           break;
         }
       }
+      /* // for hardcore debugging sessions:
+      console.debug(
+        JSON.stringify(
+          this.field.cells
+            .map((c) => c.puzzleId)
+            .reduce((ac, cv, ci) => {
+              const zi = Math.floor(ci / this.field.width);
+              if (ci % this.field.width === 0) ac[zi] = [];
+              ac[zi].push(cv || "");
+              return ac;
+            }, [])
+        )
+      );
+      */
       console.log(`Puzzle: found valid starting position after ${attemptCount} tries.`);
     }
 
@@ -244,19 +298,23 @@ class Puzzle extends BaseGame {
     const time = this.stopTimer();
     clearInterval(this._displayTimeInterval);
 
-    const restoredAvgTime = this.stats.runs * this.stats.avgTime;
-    const restoredAvgClicks = this.stats.runs * this.stats.avgClicks;
+    const gridSize = this.options.gridSizes[this.settings.gridSizes];
+    const statRef = this.stats[gridSize];
 
-    this.stats.runs += 1;
-    this.stats.lastClicks = this.clicks;
-    this.stats.lastTime = time;
-    this.stats.avgTime = (restoredAvgTime + this.stats.lastTime) / this.stats.runs;
-    this.stats.avgClicks = (restoredAvgClicks + this.stats.lastClicks) / this.stats.runs;
-    this.stats.bestTime = Math.min(this.stats.bestTime, this.stats.lastTime) || this.stats.lastTime;
-    this.stats.bestClicks = Math.min(this.stats.bestClicks, this.stats.lastClicks) || this.stats.lastClicks;
+    const restoredAvgTime = statRef.runs * statRef.avgTime;
+    const restoredAvgClicks = statRef.runs * statRef.avgClicks;
+
+    statRef.runs += 1;
+    statRef.lastClicks = this.clicks;
+    statRef.lastTime = time;
+    statRef.avgTime = (restoredAvgTime + statRef.lastTime) / statRef.runs;
+    statRef.avgClicks = (restoredAvgClicks + statRef.lastClicks) / statRef.runs;
+    statRef.bestTime = Math.min(statRef.bestTime, statRef.lastTime) || statRef.lastTime;
+    statRef.bestClicks = Math.min(statRef.bestClicks, statRef.lastClicks) || statRef.lastClicks;
     this.saveState();
 
-    // re-enable "start game" button
+    // re-enable "start game" button and grid picker
+    this.disabledSettings.remove("gridSizes");
     this.displayTime.set(formatTimer(time, true));
     forceUpdateDOM();
     setTimeout(() => {
@@ -270,18 +328,41 @@ class Puzzle extends BaseGame {
   getShareableData() {
     let str = "🧩 " + this.name;
 
-    if (this.stats.runs > 0) {
-      str += `\n🏁 Last run: ${formatTimer(this.stats.lastTime, true)} (${this.stats.lastClicks})`;
-      str += `\nAverage in ${this.stats.runs} runs:`;
-      str += `\n⏱️ ~${formatTimer(this.stats.avgTime, true)}`;
-      str += `\n👆 ~${this.stats.avgClicks.toFixed(2)} swaps`;
+    const gridSize = this.options.gridSizes[this.settings.gridSizes];
+    str += " (" + gridSize + ")";
+
+    const statRef = this.stats[gridSize];
+
+    if (statRef.runs > 0) {
+      str += `\n🏁 Last run: ${formatTimer(statRef.lastTime, true)} (${statRef.lastClicks})`;
+      str += `\nAverage in ${statRef.runs} runs:`;
+      str += `\n⏱️ ~${formatTimer(statRef.avgTime, true)}`;
+      str += `\n👆 ~${statRef.avgClicks.toFixed(2)} swaps`;
       str += `\nPersonal best:`;
-      str += `\n⏱️🎖️ ${formatTimer(this.stats.bestTime, true)}`;
-      str += `\n👆🎖️ ${this.stats.bestClicks} swaps`;
+      str += `\n⏱️🎖️ ${formatTimer(statRef.bestTime, true)}`;
+      str += `\n👆🎖️ ${statRef.bestClicks} swaps`;
     }
 
     str += "\n" + window.location.href;
     return str;
+  }
+
+  loadState() {
+    super.loadState();
+
+    // fix: stats object might contain old data (not per size, but general)
+    if ("games" in this.stats && !("6x6" in this.stats)) {
+      const fixedStats = this.options.gridSizes.reduce((statObject, size) => {
+        statObject[size] = Object.assign({}, this._statsProto);
+        return statObject;
+      }, {});
+
+      // original size was 6x6, assign all stats:
+      fixedStats["6x6"] = this.stats;
+      this.stats = fixedStats;
+    }
+
+    return this;
   }
 }
 

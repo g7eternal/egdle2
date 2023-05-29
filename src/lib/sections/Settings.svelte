@@ -14,6 +14,13 @@
     forceUpdateDOM();
   }
 
+  function updateExternalOptionSelector(event) {
+    const key = event.currentTarget.dataset.optionkey;
+    const value = parseInt(event.currentTarget.value, 10); // record the index
+    $game.setOption(key, value);
+    forceUpdateDOM();
+  }
+
   function doSetCellColor(eventTarget, callerIndex) {
     // useful for binary game mode, where there are two dropdowns with colors
     const anotherIndex = Math.abs(callerIndex - 1);
@@ -81,6 +88,29 @@
                     {/each}
                   </select>
                 {/each}
+              </div>
+            </div>
+          {:else if lib.type === "dropdown"}
+            <div class="mt-2 pt-2 border-top">
+              <div class="d-flex flex-row align-items-center">
+                <label class="form-check-label flex-grow-1" for={"opt_" + key}>{lib.title}</label>
+                <select
+                  class="form-select w-auto flex-grow-1"
+                  id={"opt_" + key}
+                  value={$game.settings[key]}
+                  {disabled}
+                  data-optionkey={key}
+                  on:change={updateExternalOptionSelector}
+                >
+                  {#each $game.options[key] as optionText, optionIndex}
+                    <option value={optionIndex}>{optionText}</option>
+                  {/each}
+                </select>
+              </div>
+              <div>
+                <small class="form-text" class:disabled>
+                  {disabled ? lib.error : lib.desc}
+                </small>
               </div>
             </div>
           {:else}

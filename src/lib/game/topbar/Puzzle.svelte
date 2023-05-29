@@ -16,17 +16,18 @@
   }
 
   function doStart() {
+    $currentGame.disabledSettings.add("gridSizes");
     countdown = true;
+    forceUpdateDOM();
   }
 
-  function doRestart() {
+  function doStop() {
     $currentGame.reset();
     forceUpdateDOM();
-    doStart();
   }
 
-  function askForRestart() {
-    showConfirmAdviceFriend("Do you really want to reset the puzzle?", "Yes, please", doRestart);
+  function askForStop() {
+    showConfirmAdviceFriend("No stats will be recorded. Stop this game?", "Yes, please", doStop);
   }
 </script>
 
@@ -54,9 +55,9 @@
           Start game
         </button>
       {:else}
-        <button class="btn btn-warning" on:click={askForRestart}>
-          <MaterialIcon>restart_alt</MaterialIcon>
-          Start over
+        <button class="btn btn-warning" on:click={askForStop}>
+          <MaterialIcon>front_hand</MaterialIcon>
+          End the run
         </button>
       {/if}
     {/if}

@@ -101,6 +101,12 @@ export const settingsLibrary = {
       title: "🔢 Simple mode",
       desc: "Puzzle pieces will show their number. Perfect for casual players",
     },
+    gridSizes: {
+      title: "🖼️ Grid size",
+      desc: "More pieces = harder puzzle. Stats are tracked separately for each size",
+      type: "dropdown",
+      error: "Cannot change grid size during an active game!",
+    },
   },
 };
 
