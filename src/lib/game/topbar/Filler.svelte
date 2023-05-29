@@ -1,15 +1,25 @@
 <script>
+  import { scale } from "svelte/transition";
   import currentGame from "$lib/utils/state";
-  import tippy from "../../utils/tippy";
-  import { showConfirmAdviceFriend } from "../../utils/adviceFriend";
-  import MaterialIcon from "../../elements/MaterialIcon.svelte";
+  import tippy from "$lib/utils/tippy";
+  import { showConfirmAdviceFriend } from "$lib/utils/adviceFriend";
+  import MaterialIcon from "$lib/elements/MaterialIcon.svelte";
   import { cellColors } from "../consts";
+  import { forceUpdateDOM } from "../../utils/state";
 
   // cannot do double subscription, have to resolve this reference:
   const displayTimerStore = $currentGame.displayTime;
 
+  let countdown = -1;
   function startNewRun() {
-    $currentGame.startNewRun();
+    $currentGame.field.reset().disableCells();
+    forceUpdateDOM();
+    countdown = 3;
+    const countTimer = setInterval(() => {
+      countdown -= 1;
+      if (countdown === 0) $currentGame.startNewRun();
+      if (countdown < 0) clearInterval(countTimer);
+    }, 1000);
   }
 
   function askForRestart() {
@@ -30,7 +40,11 @@
   </div>
   <div class="section mid">
     {#if !$currentGame.result}
-      {#if $currentGame.gameOver}
+      {#if countdown >= 0}
+        {#key countdown}
+          <div class="countdown" in:scale>{countdown || "GO!"}</div>
+        {/key}
+      {:else if $currentGame.gameOver}
         <button class="btn btn-success" on:click={startNewRun}>
           <MaterialIcon>flag</MaterialIcon>
           Start game
@@ -125,6 +139,12 @@
   }
   .color-picker:active {
     transform: scale(0.9);
+  }
+
+  .countdown {
+    transform: scale(1.3);
+    font-weight: 500;
+    color: var(--bs-primary-text);
   }
 
   @media all and (max-width: 400px) {
