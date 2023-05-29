@@ -128,8 +128,10 @@ class Puzzle extends BaseGame {
   doInitialFill(doShuffle = true) {
     if (doShuffle) {
       let hasSolution = false;
+      let attemptCount = 0;
 
       while (!hasSolution) {
+        attemptCount += 1;
         shuffle(this.field.cells);
 
         // idea from https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
@@ -146,6 +148,7 @@ class Puzzle extends BaseGame {
 
         hasSolution = (blankRowIndex + inversionCount) % 2 !== 0;
       }
+      console.log(`Puzzle: found valid starting position after ${attemptCount} tries.`);
     }
 
     this.field.cells.forEach((cell) => {

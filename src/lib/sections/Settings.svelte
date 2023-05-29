@@ -1,5 +1,5 @@
 <script>
-  import { dev as devMode } from "$app/environment";
+  import { dev as devMode, version } from "$app/environment";
   import { settings, toggleDarkMode } from "../utils/settings";
   import game, { forceUpdateDOM } from "../utils/state";
   import { settingsLibrary, cellColors } from "../game/consts";
@@ -106,6 +106,11 @@
         <div class="mt-2 fst-italic text-center text-secondary">
           More options will be available after you choose a game
         </div>
+        <div class="app-version">
+          <hr />
+          Build version:
+          <b>{version}</b>
+        </div>
       {/if}
 
       {#if devMode}
@@ -150,5 +155,16 @@
   small.disabled {
     opacity: 1;
     color: rgb(136, 104, 0);
+  }
+
+  .app-version {
+    width: 100%;
+    font-size: 80%;
+    opacity: 30%;
+    text-align: center;
+  }
+  .app-version hr {
+    margin-bottom: 2px;
+    margin-top: 64px;
   }
 </style>
