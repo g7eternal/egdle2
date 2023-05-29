@@ -136,17 +136,24 @@ class Puzzle extends BaseGame {
 
         // idea from https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
         const blankRowIndex = Math.floor(this.field.cells.findIndex((c) => c.puzzleId === 0) / this.field.width);
-        const inversionCount = this.field.cells.reduce((ac, cv, ci, ca) => {
+        const inversionCount = this.field.cells.reduce((total, cell, cellIndex, field) => {
+          if (!cell.puzzleId) return total; // zero (blank cell) is ignored
+
           let inversions = 0;
-          for (let i = ci + 1; i < ca.length; i++) {
-            const cell = ca[i];
-            if (!cell) continue; // zero is ignored
-            if (cell.puzzleId > cv.puzzleId) inversions += 1;
+          for (let i = cellIndex + 1; i < field.length; i++) {
+            const comparedCell = field[i];
+            if (!comparedCell.puzzleId) continue; // zero (blank cell) is ignored
+            if (comparedCell.puzzleId < cell.puzzleId) inversions += 1;
           }
-          return ac + inversions;
+          return total + inversions;
         }, 0);
 
         hasSolution = (blankRowIndex + inversionCount) % 2 !== 0;
+
+        if (attemptCount > 1e4) {
+          console.warn("\nPossible infinite loop prevented at puzzle.doInitialFill() - puzzle may become unsolvable!");
+          break;
+        }
       }
       console.log(`Puzzle: found valid starting position after ${attemptCount} tries.`);
     }
