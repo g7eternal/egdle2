@@ -2,12 +2,16 @@ import { nullFunction, emoji, today } from "./consts";
 import { forceUpdateDOM } from "../utils/state";
 import { sample } from "../utils/common";
 import seedrandom from "seedrandom";
+import { recordSolved } from "../utils/dailyTracker";
 
 const CELL_ACTIVATION_DELAY = 300; // should roughly equal to css transition time in FieldCell.svelte
+
+let cellId = 0;
 
 export class BaseCell {
   constructor(content = "") {
     this.enabled = true;
+    this.id = cellId++;
 
     this.clear(content, true);
 
@@ -275,6 +279,8 @@ export class BaseGame {
   endGame(result, skipRecording = false) {
     this.gameOver = true;
     this.result = Boolean(result);
+
+    if (this.kind === "daily") recordSolved(this.id);
 
     this.field.disableCells();
 

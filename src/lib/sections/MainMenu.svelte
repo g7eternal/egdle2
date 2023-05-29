@@ -2,6 +2,7 @@
   import { fade } from "svelte/transition";
   import { appReady, settings } from "../utils/settings";
   import { nullFunction } from "../game/consts";
+  import { tracker } from "../utils/dailyTracker";
 
   import { getInstance as egdle } from "../game/classic";
   import { getInstance as binary } from "../game/binary";
@@ -17,7 +18,7 @@
       title: "Daily games",
       list: [
         {
-          id: "classic",
+          id: "egdle",
           init: egdle,
           name: "Classic",
           desc: "Find the hidden egg in as few taps as possible",
@@ -74,6 +75,7 @@
         <li
           class="btn btn-outline-secondary"
           class:disabled={game.init === nullFunction}
+          class:solved={$tracker.done.includes(game.id)}
           on:click={() => setGame(game)}
           on:keypress={(event) => {
             if (event.key === "Enter") setGame(game);
@@ -157,6 +159,20 @@
   li p {
     font-size: 90%;
     margin: 0;
+  }
+
+  .solved {
+    position: relative;
+  }
+  .solved:after {
+    content: "✅";
+    z-index: 2;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 2em;
+    color: green;
+    opacity: 40%;
   }
 
   .btn {

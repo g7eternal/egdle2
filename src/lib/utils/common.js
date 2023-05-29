@@ -72,6 +72,10 @@ export function formatTimer(time, withMS = false) {
   return timeString;
 }
 
+export function formatDate(date, format = "yyyy-mm-dd") {
+  return dateFormat(date, format);
+}
+
 export function asyncPause(delay = 0) {
   return new Promise((resolve) => {
     setTimeout(resolve, delay);

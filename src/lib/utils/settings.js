@@ -11,7 +11,7 @@ const defaultSettings = {
   darkMode: false,
   firstVisit: true,
   announcements: [],
-  seenGames: ["classic"],
+  seenGames: ["egdle"],
   lastVisit: new Date(),
 };
 
@@ -63,11 +63,7 @@ try {
       // first visit - autodetect some options
       s.firstVisit = false;
       s.announcements.push("firstReturnVisit"); // prevents "welcome back" message
-      if (
-        browser &&
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
+      if (browser && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
         toggleDarkMode(true);
       }
     } else {
