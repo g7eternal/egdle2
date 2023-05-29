@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-bs-theme="light" prefix="og: https://ogp.me/ns#">
 
 <head>
 	<meta charset=" utf-8" />
@@ -51,6 +51,18 @@
 		if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
 			document.documentElement.dataset.bsTheme = "dark";
 		}
+	</script>
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-KLNTNP8BV4"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag("js", new Date());
+
+		gtag("config", "G-KLNTNP8BV4");
 	</script>
 </body>
 
