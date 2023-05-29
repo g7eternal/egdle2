@@ -27,7 +27,7 @@ function stageMoreEggs(inc = 1) {
   this.eggs += inc;
   return Promise.resolve();
 }
-function stageFaster(dec = 69) {
+function stageFaster(dec = 65) {
   this.hideDelay -= dec;
   return Promise.resolve();
 }
@@ -163,9 +163,7 @@ class Pattern extends BaseGame {
       cell.visible = true;
     });
 
-    this._hideDelayTimer = setTimeout(() => {
-      this.scheduleHideAndRender(true);
-    }, this.hideDelay);
+    this.scheduleHideAndRender(true);
 
     forceUpdateDOM(); // renders egg fade in - initial pattern demonstration
     return this;
