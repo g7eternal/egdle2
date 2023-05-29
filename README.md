@@ -24,9 +24,14 @@ Suggested editor is VS Code with the following plugins:
 * GitLens
 
 ## Building
+Project uses `@sveltejs/adapter-static` - the resulting build will consist of static resources.
+
 To create a production version of your app:
 
+```
 npm run build
-You can preview the production build with npm run preview.
+```
+
+You can preview the production build with `npm run preview`.
 
 The static version of app will be available at `/build` after you run a build.
