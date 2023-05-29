@@ -2,7 +2,7 @@
   import { dev as devMode } from "$app/environment";
   import { settings, toggleDarkMode } from "../utils/settings";
   import game, { forceUpdateDOM } from "../utils/state";
-  import { settingsLibrary } from "../game/consts";
+  import { settingsLibrary, cellColors } from "../game/consts";
 
   import DevModeButtons from "../elements/DevModeButtons.svelte";
   import MaterialIcon from "../elements/MaterialIcon.svelte";
@@ -12,6 +12,17 @@
     const value = Boolean(event.currentTarget.checked);
     $game.setOption(key, value);
     forceUpdateDOM();
+  }
+
+  function doSetCellColor(eventTarget, callerIndex) {
+    // useful for binary game mode, where there are two dropdowns with colors
+    const anotherIndex = Math.abs(callerIndex - 1);
+    if ($game.settings.colors[anotherIndex] === eventTarget.value) {
+      // swap colors, disallow picking same color
+      $game.settings.colors[anotherIndex] = $game.settings.colors[callerIndex];
+    }
+    $game.settings.colors[callerIndex] = eventTarget.value;
+    $game.setOption("colors", $game.settings.colors);
   }
 </script>
 
@@ -43,22 +54,53 @@
         {#each Object.keys($game.settings) as key}
           {@const lib = settingsLibrary[$game.id][key]}
           {@const disabled = $game.disabledSettings.has(key)}
-          <div class="form-check form-switch">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id={"opt_" + key}
-              checked={$game.settings[key]}
-              {disabled}
-              data-optionkey={key}
-              on:change={updateExternalOption}
-            />
-            <label class="form-check-label" for={"opt_" + key}>{lib.title}</label>
-            <br />
-            <small class="form-text" class:disabled>
-              {disabled ? lib.error : lib.desc}
-            </small>
-          </div>
+
+          {#if lib.type === "color_multiselect"}
+            <hr />
+            <div class="d-flex flex-row my-2">
+              <div class="flex-grow-1">
+                <span class="form-check-label">{lib.title}</span>
+                <br />
+                <small class="form-text" class:disabled>
+                  {disabled ? lib.error : lib.desc}
+                </small>
+              </div>
+              <div class="d-flex flex-column gap-2">
+                {#each $game.settings[key] as color, colorIndex}
+                  <select
+                    class="form-select"
+                    style:border-color={color}
+                    style:color
+                    value={color}
+                    on:change={(event) => doSetCellColor(event.currentTarget, colorIndex)}
+                  >
+                    {#each Object.keys(cellColors) as colorOption}
+                      <option value={colorOption} style:background-color={cellColors[colorOption]}>
+                        {colorOption}
+                      </option>
+                    {/each}
+                  </select>
+                {/each}
+              </div>
+            </div>
+          {:else}
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id={"opt_" + key}
+                checked={$game.settings[key]}
+                {disabled}
+                data-optionkey={key}
+                on:change={updateExternalOption}
+              />
+              <label class="form-check-label" for={"opt_" + key}>{lib.title}</label>
+              <br />
+              <small class="form-text" class:disabled>
+                {disabled ? lib.error : lib.desc}
+              </small>
+            </div>
+          {/if}
         {/each}
       {:else}
         <div class="mt-2 fst-italic text-center text-secondary">
@@ -92,9 +134,14 @@
     filter: hue-rotate(-75deg) saturate(0.7);
   }
 
+  select,
   input,
   label {
     cursor: pointer;
+  }
+
+  option {
+    color: var(--bs-body-color);
   }
 
   small.form-text {

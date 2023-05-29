@@ -25,6 +25,7 @@ export class BaseCell {
   clear(content = "", withClicks = false) {
     this.content = content;
     this.visible = false;
+    this.locked = false;
 
     this.bgcolor = "";
     this.color = "";
@@ -67,16 +68,7 @@ export class BaseCell {
   }
 
   toJSON() {
-    const listOfProps = [
-      "content",
-      "enabled",
-      "visible",
-      "clicks",
-      "winner",
-      "loser",
-      "bgcolor",
-      "color",
-    ];
+    const listOfProps = ["content", "enabled", "visible", "locked", "clicks", "winner", "loser", "bgcolor", "color"];
 
     const simpleObject = {};
     listOfProps.forEach((prop) => {
@@ -97,8 +89,7 @@ export class BaseField {
   setSize(width, height) {
     this.width = width;
     this.height = height;
-    if (width < 3 || height < 3)
-      throw new Error("Invalid field dimensions: cannot go lower than 3x3");
+    if (width < 3 || height < 3) throw new Error("Invalid field dimensions: cannot go lower than 3x3");
 
     this.size = this.width * this.height;
     return this.reset();
@@ -106,6 +97,23 @@ export class BaseField {
 
   reset() {
     this.cells = new Array(this.size).fill(null).map(() => new BaseCell(sample(emoji.food)));
+
+    // Y-based grid (references as [y][x], this.cells[3] === this.grid[0][3])
+    this.inverseGrid = [];
+    for (let y = 0; y < this.height; y++) {
+      this.inverseGrid.push(this.cells.slice(y * this.height, (y + 1) * this.height));
+    }
+
+    // X-based grid (references as [x][y], this.cells[3] === this.grid[3][0])
+    this.grid = [];
+    for (let x = 0; x < this.width; x++) {
+      const column = [];
+      for (let y = 0; y < this.height; y++) {
+        column.push(this.inverseGrid[y][x]);
+      }
+      this.grid.push(column);
+    }
+
     return this;
   }
 
@@ -118,7 +126,7 @@ export class BaseField {
 
   enableCells() {
     this.cells.forEach((f) => {
-      f.enabled = true;
+      f.enabled = !f.locked;
     });
     return this;
   }
@@ -225,13 +233,7 @@ export class BaseGame {
   }
 
   initRNG() {
-    const seed = [
-      this.id,
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate(),
-      today.getDay(),
-    ].join("-");
+    const seed = [this.id, today.getFullYear(), today.getMonth(), today.getDate(), today.getDay()].join("-");
     this._prng = new seedrandom(seed);
     return this;
   }
@@ -361,12 +363,16 @@ export class BaseGame {
       } else {
         // reset game state
         this.gameOver = false;
+        this.startTime = 0; // resets the timer for timed daily games
+        this.clicks = 0;
         this.result = null;
       }
 
       // apply fixups
       this.stats.lastVisit = new Date(this.stats.lastVisit || 0);
-      this.clicks = this.field.getTotalClicks();
+      if (storedData && !("clicks" in storedData)) {
+        this.clicks = this.field.getTotalClicks();
+      }
       if (this.issue - this.stats.lastIssue > 1) {
         this.stats.streak = 0;
       }

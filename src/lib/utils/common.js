@@ -60,9 +60,15 @@ export function sfc32(a, b, d, c) {
   };
 }
 
+const timeHour = 1000 * 60 * 60;
+const timeDay = timeHour * 24;
 export function formatTimer(time, withMS = false) {
-  let timeString = dateFormat(time, "MM:ss");
+  const timeFormat = time > timeHour ? "HH:MM:ss" : "MM:ss";
+  let timeString = dateFormat(time, timeFormat);
+
+  if (time > timeDay) timeString = Math.floor(time / timeDay) + ":" + timeString;
   if (withMS) timeString += "." + String(time % 1000 | 0).padStart(3, "0");
+
   return timeString;
 }
 

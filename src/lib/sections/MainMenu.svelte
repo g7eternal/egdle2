@@ -4,6 +4,7 @@
   import { nullFunction } from "../game/consts";
 
   import { getInstance as egdle } from "../game/classic";
+  import { getInstance as binary } from "../game/binary";
   import { getInstance as matcher } from "../game/matcher";
   import { getInstance as pattern } from "../game/pattern";
   import { getInstance as filler } from "../game/filler";
@@ -19,13 +20,19 @@
           id: "classic",
           init: egdle,
           name: "Classic",
-          desc: "Find the hidden egg in as few taps as possible.",
+          desc: "Find the hidden egg in as few taps as possible",
         },
         {
           id: "matcher",
           init: matcher,
           name: "Pairs",
-          desc: "Click around and locate all matching eggs on the field.",
+          desc: "Click around and locate all matching eggs on the field",
+        },
+        {
+          id: "binary",
+          init: binary,
+          name: "Binary",
+          desc: "Fill the grid with eggs of two colors while following a couple of rules",
         },
       ],
     },
@@ -88,7 +95,18 @@
   {/each}
 </div>
 
-<p class="promise">...more new games to be added soon!</p>
+<p class="promise">
+  Have an idea for a game? Want to share your feedback?
+  <br />
+  Contact me at
+  <span class="contact discord" title="Discord" translate="no">
+    <img src="pics/icon/discord.svg" alt="Discord" aria-label="Discord icon" width="32" height="32" />
+    g7eternal#8037
+  </span>
+  or
+  <a class="contact" href="mailto:egdle@g7eternal.com" title="Send email">drop an email</a>
+  with your ideas
+</p>
 
 <style>
   .main {
@@ -154,6 +172,25 @@
     font-style: italic;
     text-align: center;
     opacity: 0.5;
+  }
+  .contact {
+    font-weight: bold;
+    filter: none;
+    transition: filter 0.2s ease;
+  }
+  .contact:hover {
+    filter: brightness(1.5) contrast(1.2);
+  }
+  .contact.discord {
+    cursor: default;
+    color: #5865f2;
+    user-select: all;
+  }
+  .contact.discord img {
+    width: 1rem;
+    height: auto;
+    vertical-align: baseline;
+    user-select: none;
   }
 
   @media all and (max-width: 360px) {

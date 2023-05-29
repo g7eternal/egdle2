@@ -20,6 +20,17 @@
     if (event.key === "Enter") doClickCell(cell);
   }}
 >
+  {#if cell.locked}
+    <div class="lock-overlay">
+      <svg fill="#555" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+        <path
+          fill-rule="evenodd"
+          d="M1016.588 1242.353v338.823h-112.94v-338.823h112.94ZM960.118 112.94c217.976 0 395.294 177.318 395.294 395.294V903.53H564.824V508.235c0-217.976 177.317-395.294 395.294-395.294Zm508.235 790.588V508.235C1468.353 228.028 1240.325 0 960.118 0S451.882 228.028 451.882 508.235V903.53H226v790.589C226 1818.692 327.308 1920 451.882 1920h1016.47c124.575 0 225.883-101.308 225.883-225.882V903.529h-225.882Z"
+        />
+      </svg>
+    </div>
+  {/if}
+
   {#if cell.visible}
     {cell.content}
 
@@ -64,8 +75,8 @@
     user-select: none;
     filter: none;
     transform: none;
-    transition: background-color 0.3s ease-out, color 0.3s ease, filter 0.3s ease-out,
-      transform 0.3s ease-out;
+    position: relative;
+    transition: background-color 0.3s ease-out, color 0.3s ease, filter 0.3s ease-out, transform 0.3s ease-out;
   }
   .cell:not(.active) {
     cursor: not-allowed;
@@ -83,6 +94,23 @@
   .cell.transparent {
     background-color: transparent;
     color: transparent;
+  }
+
+  .lock-overlay {
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .lock-overlay svg {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    width: 30%;
+    height: auto;
+    opacity: 0.8;
   }
 
   .visual-aid {
@@ -114,6 +142,12 @@
     }
     .visual-aid {
       font-size: 50%;
+    }
+    .lock-overlay svg {
+      bottom: 3%;
+      right: 3%;
+      width: 44%;
+      opacity: 0.8;
     }
   }
   @media all and (max-width: 200px) {
