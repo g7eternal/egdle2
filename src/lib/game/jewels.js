@@ -295,7 +295,7 @@ class Jewels extends BaseGame {
     let isFieldFull = combo === 0;
     const refiller = () => {
       if (isFieldFull) {
-        this.calculateAllCombos(depth + 0.5);
+        this.calculateAllCombos(depth + 1);
         this.ongoingCombos -= 1e4; // unlocks game end check condition
         return;
       }
