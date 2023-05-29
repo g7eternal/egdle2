@@ -42,7 +42,7 @@
           {cell}
           allowFlicks={$game.settings.allowFlicks}
           focused={$game.activeCell === cell}
-          isPuzzlePiece={$game.id === "puzzle" && !$game.settings.numericMode}
+          isPuzzlePiece={$game.id === "puzzle"}
         />
       </div>
     {/each}

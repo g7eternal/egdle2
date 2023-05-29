@@ -223,6 +223,13 @@
     background-color: var(--bs-body-bg);
   }
 
+  .cell.puzzle-piece {
+    font-weight: bold;
+    text-shadow: 0px 0px 2px white, 0px 0px 3px white, 0px 0px 4px white;
+  }
+  :global([data-bs-theme="dark"]) .cell.puzzle-piece {
+    text-shadow: 0px 0px 2px black, 0px 0px 2px black;
+  }
   .cell.puzzle-piece:not(.transparent) {
     background-repeat: no-repeat;
     background-image: url(/example/puzzle-pic.png);
@@ -239,6 +246,9 @@
       min-width: 30px;
       height: 50px;
       min-height: 30px;
+    }
+    .cell.puzzle-piece {
+      font-size: 75%;
     }
     .visual-aid {
       font-size: 50%;

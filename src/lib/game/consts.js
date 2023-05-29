@@ -99,7 +99,7 @@ export const settingsLibrary = {
     },
     numericMode: {
       title: "🔢 Simple mode",
-      desc: "Cells will show numbers instead of pictures",
+      desc: "Puzzle pieces will show their number. Perfect for casual players",
     },
   },
 };

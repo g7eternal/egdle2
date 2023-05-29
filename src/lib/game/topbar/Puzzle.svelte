@@ -62,18 +62,16 @@
     {/if}
   </div>
   <div class="section right">
-    {#if !$currentGame.settings.numericMode}
-      <span
-        class="btn btn-secondary"
-        use:tippy={{
-          trigger: "click",
-          content: `<img src="example/puzzle-pic.png" alt="Puzzle" width="250" height="250">`,
-        }}
-      >
-        <MaterialIcon>try</MaterialIcon>
-        Peek image
-      </span>
-    {/if}
+    <span
+      class="btn btn-secondary"
+      use:tippy={{
+        trigger: "click",
+        content: `<img src="example/puzzle-pic.png" alt="Puzzle" width="250" height="250">`,
+      }}
+    >
+      <MaterialIcon>try</MaterialIcon>
+      Peek image
+    </span>
   </div>
 </div>
 
