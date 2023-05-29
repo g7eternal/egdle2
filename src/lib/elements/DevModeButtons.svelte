@@ -15,6 +15,13 @@
     forceUpdateDOM();
   }
 
+  function doPuzzleSolve() {
+    if (!$currentGame) return;
+    $currentGame.field.cells.sort((a, b) => a.puzzleId - b.puzzleId);
+    $currentGame.field.cells.push($currentGame.field.cells.shift()); // move the empty cell to the end
+    forceUpdateDOM();
+  }
+
   let debugConfetti = false;
   function doConfettiTest() {
     debugConfetti = !debugConfetti;
@@ -32,6 +39,13 @@
 </script>
 
 <div class="d-flex flex-wrap justify-content-center">
+  {#if $currentGame?.id === "puzzle"}
+    <button class="btn btn-success" on:click={doPuzzleSolve}>
+      <MaterialIcon>extension</MaterialIcon>
+      Instantly solve the puzzle
+    </button>
+  {/if}
+
   <button class="btn btn-outline-secondary" on:click={doConfettiTest}>
     {#if debugConfetti}
       <Confetti
@@ -48,9 +62,7 @@
     🎉 Confetti
   </button>
 
-  <button class="btn btn-outline-secondary" on:click={tryShowDailyEggFact}>
-    🥚 Show random egg fact
-  </button>
+  <button class="btn btn-outline-secondary" on:click={tryShowDailyEggFact}> 🥚 Show random egg fact </button>
 
   <button class="btn btn-secondary" on:click={forceChromaKey}>
     <MaterialIcon>gradient</MaterialIcon>

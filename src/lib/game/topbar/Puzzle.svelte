@@ -26,7 +26,7 @@
   }
 
   function askForRestart() {
-    showConfirmAdviceFriend("Do you really want to reset the run?", "Yes, I do", doRestart);
+    showConfirmAdviceFriend("Do you really want to reset the puzzle?", "Yes, please", doRestart);
   }
 </script>
 
@@ -38,6 +38,11 @@
     <b class="timer text-success">
       {$displayTimerStore}
     </b>
+    <span class="padder mx-1" />
+    <span use:tippy={{ content: "Swap count" }}>
+      <MaterialIcon size="24px">ads_click</MaterialIcon>
+    </span>
+    <b class="text-success">{$currentGame.clicks}</b>
   </div>
   <div class="section mid">
     {#if !$currentGame.result}
@@ -57,12 +62,18 @@
     {/if}
   </div>
   <div class="section right">
-    <span use:tippy={{ content: "Score" }}>
-      <MaterialIcon size="24px">ads_click</MaterialIcon>
-    </span>
-    <b class="text-success">{$currentGame.clicks}</b>
-    /
-    <b>{$currentGame.field.size}</b>
+    {#if !$currentGame.settings.numericMode}
+      <span
+        class="btn btn-secondary"
+        use:tippy={{
+          trigger: "click",
+          content: `<img src="example/puzzle-pic.png" alt="Puzzle" width="250" height="250">`,
+        }}
+      >
+        <MaterialIcon>try</MaterialIcon>
+        Peek image
+      </span>
+    {/if}
   </div>
 </div>
 
@@ -84,7 +95,8 @@
     vertical-align: bottom;
   }
 
-  .mid {
+  .mid,
+  .right {
     display: flex;
     flex-flow: row wrap;
     align-items: center;
@@ -108,7 +120,8 @@
     .btn {
       font-size: 10px;
     }
-    .mid {
+    .mid,
+    .right {
       gap: 2px;
     }
   }

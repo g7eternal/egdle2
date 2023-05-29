@@ -27,7 +27,7 @@
           Start game
         </button>
       {:else}
-        <button class="btn btn-outline-warning" on:click={askForRestart}>
+        <button class="btn btn-warning" on:click={askForRestart}>
           <MaterialIcon>restart_alt</MaterialIcon>
           Start over
         </button>
@@ -35,9 +35,7 @@
     {/if}
   </div>
   <div class="section right">
-    {emoji.unlife.repeat(STARTING_LIVES - $currentGame.lives)}{emoji.life.repeat(
-      $currentGame.lives
-    )}
+    {emoji.unlife.repeat(STARTING_LIVES - $currentGame.lives)}{emoji.life.repeat($currentGame.lives)}
   </div>
 </div>
 

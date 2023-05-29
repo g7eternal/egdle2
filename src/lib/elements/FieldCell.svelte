@@ -5,6 +5,18 @@
   export let allowFlicks = false;
   export let focused = false;
 
+  // puzzle piece:
+  export let isPuzzlePiece = false;
+  let puzzleScale, puzzleOffset, puzzleX, puzzleY;
+
+  $: {
+    const sizeOffset = 123;
+    puzzleOffset = (cell.puzzleId || $game.field.size) - 1;
+    puzzleScale = $game.field.width * sizeOffset + "% " + $game.field.height * sizeOffset + "%";
+    puzzleX = 4 + (110 * (puzzleOffset % $game.field.width)) / $game.field.width + "%";
+    puzzleY = 1 + (110 * Math.floor(puzzleOffset / $game.field.height)) / $game.field.height + "%";
+  }
+
   function doClickCell(cell) {
     if (cell.click()) forceUpdateDOM();
   }
@@ -79,9 +91,13 @@
 <div
   class="cell"
   class:focused
+  class:puzzle-piece={isPuzzlePiece}
   class:active={cell.enabled}
   class:transparent={!cell.visible}
   style:background-color={cell.visible ? cell.bgcolor : ""}
+  style:background-size={puzzleScale}
+  style:background-position-x={puzzleX}
+  style:background-position-y={puzzleY}
   tabindex="-1"
   on:mousedown={(event) => startDrag(cell, event)}
   on:mouseup={(event) => endDrag(cell, event)}
@@ -162,7 +178,7 @@
   }
   .cell.active:hover {
     transition: none;
-    background: rgba(192, 192, 192, 0.2);
+    background-color: rgba(192, 192, 192, 0.2);
     cursor: pointer;
   }
   .cell.transparent {
@@ -196,13 +212,23 @@
 
   /* for debug purposes */
   :global(.chroma-keyed) .cell:not(.transparent) {
+    transition: none;
     background-color: var(--bs-secondary-bg) !important;
   }
   :global(.chroma-keyed) .cell.active:hover {
     background-color: rgba(192, 192, 192, 1);
   }
   :global(.chroma-keyed) .cell.transparent {
+    transition: none;
     background-color: var(--bs-body-bg);
+  }
+
+  .cell.puzzle-piece:not(.transparent) {
+    background-repeat: no-repeat;
+    background-image: url(/example/puzzle-pic.png);
+  }
+  .cell.puzzle-piece:hover {
+    filter: brightness(1.3);
   }
 
   @media all and (max-width: 400px) {

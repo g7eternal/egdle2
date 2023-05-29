@@ -10,6 +10,7 @@
   import { getInstance as jewels } from "../game/jewels";
   import { getInstance as pattern } from "../game/pattern";
   import { getInstance as filler } from "../game/filler";
+  import { getInstance as puzzle } from "../game/puzzle";
   import { getInstance as aimlab } from "../game/aimlab";
 
   import game from "../utils/state";
@@ -44,7 +45,7 @@
         {
           id: "jewels",
           init: jewels,
-          name: "Egdle Crush",
+          name: "Crush",
           desc: "Move the eggs around to create combos and increase your score",
         },
         {
@@ -64,6 +65,12 @@
           init: filler,
           name: "Filler",
           desc: "Fill the screen with eggs as quickly and efficiently as possible",
+        },
+        {
+          id: "puzzle",
+          init: puzzle,
+          name: "Puzzle",
+          desc: "Restore the original picture by moving puzzle pieces around",
         },
       ],
     },

@@ -16,3 +16,6 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 todo-list.txt
+
+# ignore fonts
+*.woff2

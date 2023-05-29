@@ -60,7 +60,7 @@
           Start game
         </button>
       {:else if !isRestartHappening}
-        <button class="btn btn-outline-warning" on:click={askForRestart}>
+        <button class="btn btn-warning" on:click={askForRestart}>
           <MaterialIcon>restart_alt</MaterialIcon>
           Start over
         </button>

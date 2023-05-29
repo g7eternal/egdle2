@@ -92,6 +92,16 @@ export const settingsLibrary = {
       desc: "Advice friend will announce all of your mistakes",
     },
   },
+  puzzle: {
+    allowFlicks: {
+      title: "👆 Enable flicks",
+      desc: "Drag a piece onto an empty space to move it. If disabled, only clicks will work",
+    },
+    numericMode: {
+      title: "🔢 Simple mode",
+      desc: "Cells will show numbers instead of pictures",
+    },
+  },
 };
 
 // these are the pre-generated seeds for egdle binary

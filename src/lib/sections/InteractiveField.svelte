@@ -38,7 +38,12 @@
         in:fly={{ duration: cellAnimTiming.in, y: -150 }}
         animate:flip={{ delay: 0, duration: 300 }}
       >
-        <FieldCell {cell} allowFlicks={$game.settings.allowFlicks} focused={$game.activeCell === cell} />
+        <FieldCell
+          {cell}
+          allowFlicks={$game.settings.allowFlicks}
+          focused={$game.activeCell === cell}
+          isPuzzlePiece={$game.id === "puzzle" && !$game.settings.numericMode}
+        />
       </div>
     {/each}
   </div>
