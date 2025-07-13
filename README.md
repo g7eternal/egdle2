@@ -1,3 +1,9 @@
+> ⚠️ **Notice**
+> 
+> Egdle is now an integral part of another project: [Okayeg.com](https://github.com/badoge/okayeg.com).  
+> 
+> This repository will remain as a public archive, it will receive no updates. All changes to the game will be reflected in new repository.
+
 # Egdle2
 
 A rework of a daily egg-hunting game. Now with new game modes!
